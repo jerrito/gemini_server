@@ -8,6 +8,8 @@ import * as jwt from "jsonwebtoken";
 import { refreshTokenKey, tokenKey } from "../secrets";
 import { NotFoundException } from "../exceptions/not_found";
 import { prisma } from "../prisma_client";
+import redis from "redis";
+import { client } from "..";
 
 export const signup=async(req:Request,res:Response,next:NextFunction)=>{
    
@@ -98,9 +100,6 @@ export const signin=async(req:Request,res:Response,next:NextFunction)=>{
       
     });
 
-   
-   
-
     res.status(200).json({
      "user":user,"token":token ,"refreshToken":refreshToken 
     })
@@ -113,15 +112,33 @@ export const me=async(req:Request,res:Response)=>{
 
 
 export const logOut=async(req:Request,res:Response)=>{
+  //: TODO freshly signed up user can't log out
   const token=req.headers.authorization;
-  await prisma.tokens.update({
-    where:{
-      token:token
-    },
-    data:{
-      isValid:false
-    }
-  });
+
+ try{client.connect()
+  .then(async (client) => {
+    console.log('connected');
+    // Write your own code here
+    const t=await client.set("token",token!);
+    console.log(t);
+    
+  })}
+  catch(err) {
+   throw  new BadRequest("Unable to retrieve cache token",
+      ErrorCode.UNAUTHORIZED,);
+    // console.log('err happened' + err);
+  };
+  await  client.quit();
+   
+
+  // await prisma.tokens.update({
+  //   where:{
+  //     token:token
+  //   },
+  //   data:{
+  //     isValid:false
+  //   }
+  // });
   res.status(200).json({"message":"Logout successful"});
 }
 
@@ -139,8 +156,18 @@ if(!refreshPayload){
     id:refreshPayload.id,
   },
     tokenKey, 
-    { expiresIn: '15m' }
+    { expiresIn: '1h' }
   );
+
+
+   await prisma.tokens.create({
+     
+    data:{
+      token:token,
+      userId:refreshPayload.id,
+    },
+    
+  });
 res.status(200).json({"token":token});
 
 }

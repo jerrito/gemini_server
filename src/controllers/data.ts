@@ -2,22 +2,23 @@ import express, {Request,Response, NextFunction } from "express";
 import { BadRequest } from "../exceptions/bad_request";
 import { ErrorCode } from "../exceptions/root";
 import { prisma } from "../prisma_client";
+import { dataSchema } from "../validation/data";
 
 
 export const createData=async(req:Request,res:Response,next:NextFunction)=>{
-    const {info,title, dataImage}=req.body;
-    
-    const data=await prisma.userData.create({
-        
+    const {data,title, dataImage}=req.body
+      const validatedData=dataSchema.parse(req.body);
+    console.log(req!.user!.id!);
+    const userData=await prisma.userData.create({ 
         data:{
-            title:title,
-            dataImage:dataImage,
+            title:validatedData.title,
+            dataImage:validatedData.dataImage,
             userId:req!.user!.id!,
-            data:info
+            data:validatedData.data
         }
     });
 
-    res.status(200).json(data);
+    res.status(200).json(userData);
 
 }
 

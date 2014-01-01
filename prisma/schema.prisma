@@ -15,9 +15,8 @@ model User{
     password String 
     profile String @default("")
     @@map("user")
-    userData UserData[]
+    dataGenerated dataGenerated[]
     blackListedTokens   Tokens[]
-    
 }
 
 model Tokens{
@@ -31,12 +30,13 @@ model Tokens{
 
 
 
-model UserData{
+model dataGenerated{
   id Int @id @default(autoincrement())
   data String 
   title String
-  dataImage String 
+  hasImage Boolean
+  dataImage  Bytes? 
   userId Int 
   user User @relation(references: [id], fields: [userId]) 
-  @@map("userData")
+  @@map("dataGenerated")
 }
