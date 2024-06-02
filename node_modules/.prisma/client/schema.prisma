@@ -1,0 +1,29 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+datasource db{
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
+}
+
+model User{
+    id Int @id @default(autoincrement())
+    userName String @unique 
+    email String @unique
+    password String 
+    profile String @default("")
+    @@map("user")
+    userData UserData[]
+}
+
+model UserData{
+  id Int @id @default(autoincrement())
+  data String 
+  title String
+  dataImage String 
+  userId Int 
+  user User @relation(references: [id], fields: [userId]) 
+  @@map("userData")
+}
