@@ -11,7 +11,7 @@ const authRouter=express.Router();
 authRouter.post("/signup",errorHandler(signup));
 
 // signin
-authRouter.get("/signin",errorHandler(signin));
+authRouter.post("/signin",errorHandler(signin));
 
 //get user
 authRouter.get("/me",[authMiddleware],errorHandler(me));
