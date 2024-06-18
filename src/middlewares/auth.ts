@@ -35,8 +35,8 @@ const prisma = new PrismaClient({ adapter })
  })
 
  if(tokenBlackListed){
-    throw new BadRequest("Invalid token",
-        ErrorCode.UNAUTHORIZED,);
+    next( new BadRequest("Invalid token",
+        ErrorCode.UNAUTHORIZED,));
  }
 
 
