@@ -16,6 +16,16 @@ model User{
     profile String @default("")
     @@map("user")
     userData UserData[]
+    blackListedTokens   BlackListedTokens[]
+    
+}
+
+model BlackListedTokens{
+  id Int @id @default(autoincrement())
+  token String @unique
+  userId Int 
+  user User @relation(references:  [id], fields: [userId])
+  @@map("blacklisted_tokens")
 }
 
 model UserData{

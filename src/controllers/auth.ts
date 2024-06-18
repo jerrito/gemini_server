@@ -79,3 +79,15 @@ export const me=async(req:Request,res:Response)=>{
 
   return res.status(200).json(req?.user);
 }
+
+
+export const logOut=async(req:Request,res:Response)=>{
+  const token=req.headers.authorization;
+  await prisma.blackListedTokens.create({
+    data:{
+      token: token!,
+    userId:req!.user!.id
+    }
+  });
+  res.status(200).json({"message":"Logout successful"});
+}
