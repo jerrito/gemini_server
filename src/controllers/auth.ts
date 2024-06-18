@@ -5,7 +5,7 @@ import { ErrorCode } from '../exceptions/root';
 import { userValidation } from "../validation/user";
 import { compareSync, hashSync } from "bcrypt";
 import * as jwt from "jsonwebtoken";
-import { tokenKey } from "../secrets";
+import { refreshTokenKey, tokenKey } from "../secrets";
 import { NotFoundException } from "../exceptions/not_found";
 import { prisma } from "../prisma_client";
 
@@ -66,8 +66,28 @@ export const signin=async(req:Request,res:Response,next:NextFunction)=>{
     const token=jwt.sign({
       id:user.id,
     },
-      tokenKey
+      tokenKey, 
+      { expiresIn: '15m' }
     );
+
+    const refreshToken=jwt.sign({
+      id:user.id,
+    },
+      refreshTokenKey, 
+      { expiresIn: '2 days' }
+    );
+ 
+  const s=  await prisma.blackListedTokens.create({
+     
+      data:{
+        token:token,
+        userId:user.id
+      }
+    });
+
+   
+   
+
     res.status(200).json({
      "user":user,"token":token
     })
@@ -83,11 +103,33 @@ export const me=async(req:Request,res:Response)=>{
 
 export const logOut=async(req:Request,res:Response)=>{
   const token=req.headers.authorization;
-  await prisma.blackListedTokens.create({
+  await prisma.blackListedTokens.update({
+    where:{
+      token:token
+    },
     data:{
-      token: token!,
-    userId:req!.user!.id
+      isValid:false
     }
   });
   res.status(200).json({"message":"Logout successful"});
+}
+
+export const refreshToKen=async(req:Request, res:Response)=>{
+  const refreshToken=req.headers.authorization;
+
+const refreshPayload=  jwt.verify(
+    refreshToken!, 
+ refreshTokenKey    
+) as any;
+if(!refreshPayload){
+  throw new BadRequest("Refresh toen not vald",ErrorCode.UNAUTHORIZED);
+}
+  const token=jwt.sign({
+    id:refreshPayload.id,
+  },
+    tokenKey, 
+    { expiresIn: '15m' }
+  );
+res.status(200).json({"token":token});
+
 }

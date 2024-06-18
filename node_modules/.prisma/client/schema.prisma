@@ -24,9 +24,12 @@ model BlackListedTokens{
   id Int @id @default(autoincrement())
   token String @unique
   userId Int 
+  isValid Boolean @default(true)
   user User @relation(references:  [id], fields: [userId])
   @@map("blacklisted_tokens")
 }
+
+
 
 model UserData{
   id Int @id @default(autoincrement())

@@ -30,7 +30,8 @@ const prisma = new PrismaClient({ adapter })
     }
      const tokenBlackListed=await prisma.blackListedTokens.findFirst({
     where:{
-        token:token
+        token:token,
+        isValid:true
     }
  })
 
