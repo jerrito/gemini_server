@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.me = exports.signin = exports.signup = void 0;
+exports.logOut = exports.me = exports.signin = exports.signup = void 0;
 const bad_request_1 = require("../exceptions/bad_request");
 const root_1 = require("../exceptions/root");
 const user_1 = require("../validation/user");
@@ -89,3 +89,14 @@ const me = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     return res.status(200).json(req === null || req === void 0 ? void 0 : req.user);
 });
 exports.me = me;
+const logOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = req.headers.authorization;
+    yield prisma_client_1.prisma.blackListedTokens.create({
+        data: {
+            token: token,
+            userId: req.user.id
+        }
+    });
+    res.status(200).json({ "message": "Logout successful" });
+});
+exports.logOut = logOut;

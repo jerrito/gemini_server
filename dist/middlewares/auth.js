@@ -39,6 +39,7 @@ const client_1 = require("@prisma/client");
 const pg_1 = require("pg");
 const adapter_pg_1 = require("@prisma/adapter-pg");
 const unauthorized_1 = require("../exceptions/unauthorized");
+const bad_request_1 = require("../exceptions/bad_request");
 const connectionString = `${process.env.DATABASE_URL}`;
 const pool = new pg_1.Pool({ connectionString });
 const adapter = new adapter_pg_1.PrismaPg(pool);
@@ -49,6 +50,14 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     // 2.If present verify token is valid and extract payload
     if (token == undefined) {
         next(new unauthorized_1.UnauthorizedException("Unauthorized", root_1.ErrorCode.UNAUTHORIZED));
+    }
+    const tokenBlackListed = yield prisma.blackListedTokens.findFirst({
+        where: {
+            token: token
+        }
+    });
+    if (tokenBlackListed) {
+        throw new bad_request_1.BadRequest("Invalid token", root_1.ErrorCode.UNAUTHORIZED);
     }
     try {
         // 3. get the user fro payload
