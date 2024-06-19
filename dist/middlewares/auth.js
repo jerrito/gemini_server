@@ -51,13 +51,14 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     if (token == undefined) {
         next(new unauthorized_1.UnauthorizedException("Unauthorized", root_1.ErrorCode.UNAUTHORIZED));
     }
-    const tokenBlackListed = yield prisma.blackListedTokens.findFirst({
+    const tokenBlackListed = yield prisma.tokens.findFirst({
         where: {
-            token: token
+            token: token,
+            isValid: false
         }
     });
     if (tokenBlackListed) {
-        throw new bad_request_1.BadRequest("Invalid token", root_1.ErrorCode.UNAUTHORIZED);
+        next(new bad_request_1.BadRequest("Invalid token", root_1.ErrorCode.UNAUTHORIZED));
     }
     try {
         // 3. get the user fro payload

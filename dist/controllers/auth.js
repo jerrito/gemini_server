@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logOut = exports.me = exports.signin = exports.signup = void 0;
+exports.refreshToken = exports.logOut = exports.me = exports.signin = exports.signup = void 0;
 const bad_request_1 = require("../exceptions/bad_request");
 const root_1 = require("../exceptions/root");
 const user_1 = require("../validation/user");
@@ -60,7 +60,10 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
             password: (0, bcrypt_1.hashSync)(password, 10),
         }
     });
-    res.status(200).json(user);
+    const refreshToken = jwt.sign({
+        id: user.id,
+    }, secrets_1.refreshTokenKey, { expiresIn: '2 days' });
+    res.status(200).json({ "user": user, "refreshToken": refreshToken });
 });
 exports.signup = signup;
 const signin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,9 +82,22 @@ const signin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
     }
     const token = jwt.sign({
         id: user.id,
-    }, secrets_1.tokenKey);
+    }, secrets_1.tokenKey, { expiresIn: '15m' });
+    const refreshToken = jwt.sign({
+        id: user.id,
+    }, secrets_1.refreshTokenKey, { expiresIn: '2 days' });
+    const s = yield prisma_client_1.prisma.tokens.createMany({
+        data: [{
+                token: token,
+                userId: user.id
+            },
+            { token: refreshToken,
+                userId: user.id
+            }
+        ],
+    });
     res.status(200).json({
-        "user": user, "token": token
+        "user": user, "token": token, "refreshToken": refreshToken
     });
 });
 exports.signin = signin;
@@ -91,12 +107,26 @@ const me = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.me = me;
 const logOut = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.headers.authorization;
-    yield prisma_client_1.prisma.blackListedTokens.create({
+    yield prisma_client_1.prisma.tokens.update({
+        where: {
+            token: token
+        },
         data: {
-            token: token,
-            userId: req.user.id
+            isValid: false
         }
     });
     res.status(200).json({ "message": "Logout successful" });
 });
 exports.logOut = logOut;
+const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const refreshToken = req.headers.authorization;
+    const refreshPayload = jwt.verify(refreshToken, secrets_1.refreshTokenKey);
+    if (!refreshPayload) {
+        throw new bad_request_1.BadRequest("Refresh token is not valid", root_1.ErrorCode.UNAUTHORIZED);
+    }
+    const token = jwt.sign({
+        id: refreshPayload.id,
+    }, secrets_1.tokenKey, { expiresIn: '15m' });
+    res.status(200).json({ "token": token });
+});
+exports.refreshToken = refreshToken;

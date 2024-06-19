@@ -38,7 +38,15 @@ export const signup=async(req:Request,res:Response,next:NextFunction)=>{
              
         }
     });
-    res.status(200).json(user);
+
+    const refreshToken=jwt.sign({
+      id:user.id,
+    },
+      refreshTokenKey, 
+      { expiresIn: '2 days' }
+    );
+
+    res.status(200).json({"user":user,"refreshToken":refreshToken});
 
 }
 
@@ -77,33 +85,36 @@ export const signin=async(req:Request,res:Response,next:NextFunction)=>{
       { expiresIn: '2 days' }
     );
  
-  const s=  await prisma.blackListedTokens.create({
+  const s=  await prisma.tokens.createMany({
      
-      data:{
+      data:[{
         token:token,
         userId:user.id
-      }
+      },
+      {  token:refreshToken,
+        userId:user.id
+     }
+     ],
+      
     });
 
    
    
 
     res.status(200).json({
-     "user":user,"token":token
+     "user":user,"token":token ,"refreshToken":refreshToken 
     })
 
 }
 
 export const me=async(req:Request,res:Response)=>{
-   
-
   return res.status(200).json(req?.user);
 }
 
 
 export const logOut=async(req:Request,res:Response)=>{
   const token=req.headers.authorization;
-  await prisma.blackListedTokens.update({
+  await prisma.tokens.update({
     where:{
       token:token
     },
@@ -114,7 +125,7 @@ export const logOut=async(req:Request,res:Response)=>{
   res.status(200).json({"message":"Logout successful"});
 }
 
-export const refreshToKen=async(req:Request, res:Response)=>{
+export const refreshToken=async(req:Request, res:Response)=>{
   const refreshToken=req.headers.authorization;
 
 const refreshPayload=  jwt.verify(
@@ -122,7 +133,7 @@ const refreshPayload=  jwt.verify(
  refreshTokenKey    
 ) as any;
 if(!refreshPayload){
-  throw new BadRequest("Refresh toen not vald",ErrorCode.UNAUTHORIZED);
+  throw new BadRequest("Refresh token is not valid",ErrorCode.UNAUTHORIZED);
 }
   const token=jwt.sign({
     id:refreshPayload.id,

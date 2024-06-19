@@ -28,10 +28,10 @@ const prisma = new PrismaClient({ adapter })
             ErrorCode.UNAUTHORIZED,
         ),)
     }
-     const tokenBlackListed=await prisma.blackListedTokens.findFirst({
+     const tokenBlackListed=await prisma.tokens.findFirst({
     where:{
         token:token,
-        isValid:true
+        isValid:false
     }
  })
 

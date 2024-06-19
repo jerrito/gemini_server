@@ -15,5 +15,7 @@ authRouter.post("/signin", (0, error_handler_1.errorHandler)(auth_1.signin));
 //get user
 authRouter.get("/me", [auth_2.default], (0, error_handler_1.errorHandler)(auth_1.me));
 //log out 
-authRouter.post("/logout", [auth_2.default], (0, error_handler_1.errorHandler)(auth_1.logOut));
+authRouter.post("/logout", (0, error_handler_1.errorHandler)(auth_1.logOut));
+// refresh token
+authRouter.post("/refresh", (0, error_handler_1.errorHandler)(auth_1.refreshToken));
 exports.default = authRouter;
