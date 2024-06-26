@@ -34,7 +34,7 @@ model dataGenerated{
   id Int @id @default(autoincrement())
   data String 
   title String
-  hasImage Boolean
+  hasImage Boolean @default(false)
   dataImage  Bytes? 
   userId Int 
   user User @relation(references: [id], fields: [userId]) 
