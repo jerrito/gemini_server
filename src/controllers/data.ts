@@ -2,29 +2,30 @@ import express, {Request,Response, NextFunction } from "express";
 import { BadRequest } from "../exceptions/bad_request";
 import { ErrorCode } from "../exceptions/root";
 import { prisma } from "../prisma_client";
+import { dataSchema } from "../validation/data";
 
 
-export const createData=async(req:Request,res:Response,next:NextFunction)=>{
-    const {info,title, dataImage}=req.body;
-    
-    const data=await prisma.userData.create({
-        
+export const createData=async(req:Request,res:Response)=>{
+      const validatedData=dataSchema.parse(req.body);
+    console.log(req!.user!.id!);
+    const dataGenerated=await prisma.dataGenerated.create({ 
         data:{
-            title:title,
-            dataImage:dataImage,
+            title:validatedData.title,
+            dataImage:validatedData.dataImage,
+            hasImage:validatedData.hasImage,
             userId:req!.user!.id!,
-            data:info
+            data:validatedData.data
         }
     });
 
-    res.status(200).json(data);
+    res.status(200).json(dataGenerated);
 
 }
 
 
 export const listData=async(req:Request,res:Response,next:NextFunction)=>{
-    const count=await prisma.userData.count();
-    const data=await prisma.userData.findMany({
+    const count=await prisma.dataGenerated.count();
+    const data=await prisma.dataGenerated.findMany({
         take:10,
         where:{         
             userId:req!.user!.id!,
@@ -43,7 +44,7 @@ export const listData=async(req:Request,res:Response,next:NextFunction)=>{
 
 export const getDataById=async(req:Request, res:Response)=>{
   try{
-    const data=await prisma.userData.findFirstOrThrow({
+    const data=await prisma.dataGenerated.findFirstOrThrow({
         where:{
             id:+req.params.id
         }
@@ -63,7 +64,7 @@ export const getDataById=async(req:Request, res:Response)=>{
 export const deleteData=async(req:Request, res:Response)=>{
 
     try{
-    await prisma.userData.delete({
+    await prisma.dataGenerated.delete({
         where:{
             id:+req.params.id  
         }
