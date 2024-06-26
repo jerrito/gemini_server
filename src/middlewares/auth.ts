@@ -25,7 +25,7 @@ const connectionString = `${process.env.DATABASE_URL}`
             ErrorCode.UNAUTHORIZED,
         ),)
     }
-   const tokenBlackListed= await prisma.tokens.findFirstOrThrow({
+   const tokenBlackListed= await prisma.tokens.findFirst({
     where:{
         token:token,
         isValid:false

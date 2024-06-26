@@ -37,7 +37,7 @@ const authMiddleware = async (req, res, next) => {
     if (token == undefined) {
         next(new unauthorized_1.UnauthorizedException("Unauthorized", root_1.ErrorCode.UNAUTHORIZED));
     }
-    const tokenBlackListed = await prisma_client_1.prisma.tokens.findFirstOrThrow({
+    const tokenBlackListed = await prisma_client_1.prisma.tokens.findFirst({
         where: {
             token: token,
             isValid: false
