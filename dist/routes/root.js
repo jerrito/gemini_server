@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -30,7 +21,7 @@ cloudinary_1.default.v2.config({
     api_key: secrets_1.cloudinaryApiKey,
     api_secret: secrets_1.cloudinaryApiSecret
 });
-const data = () => __awaiter(void 0, void 0, void 0, function* () {
+const data = async () => {
     const mage = '../assets/god_of war.png';
     cloudinary_1.default.v2.uploader.upload(mage).then(result => {
         console.log(result);
@@ -44,6 +35,6 @@ const data = () => __awaiter(void 0, void 0, void 0, function* () {
     //   });
     console.log(data);
     //   console.log(uploadResult); 
-});
+};
 rootRouter.post("/ss", data);
 exports.default = rootRouter;
