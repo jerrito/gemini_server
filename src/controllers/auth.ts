@@ -1,4 +1,4 @@
-import express, {Request,Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express";
 
 import { BadRequest } from "../exceptions/bad_request";
 import { ErrorCode } from '../exceptions/root';
@@ -11,163 +11,164 @@ import { prisma } from "../prisma_client";
 import redis from "redis";
 import { client } from "..";
 
-export const signup=async(req:Request,res:Response,next:NextFunction)=>{
-   
-    userValidation.parse(req.body);
+export const signup = async (req: Request, res: Response, next: NextFunction) => {
 
-    const {userName,email,password,profile}=req.body;
-    
-  let user=await prisma.user.findFirst({
-    where:{
-        email:email,
-        userName:userName
+  userValidation.parse(req.body);
+
+  const { userName, email, password, profile } = req.body;
+
+  let user = await prisma.user.findFirst({
+    where: {
+      email: email,
+      userName: userName
     }
   })
-  if(user){
-  throw  new BadRequest(
-        "User already exist",
-        ErrorCode.BAD_REQUEST
+  if (user) {
+    throw new BadRequest(
+      "User already exist",
+      ErrorCode.BAD_REQUEST
     )
   }
 
-  
-
-     user= await prisma.user.create({
-        data:{
-            userName,
-            email:email,
-            password:hashSync(password,10),
-             
-        }
-    });
-
-    const refreshToken=jwt.sign({
-      id:user.id,
-    },
-      refreshTokenKey, 
-      { expiresIn: '2 days' }
-    );
-
-    res.status(200).json({"user":user,"refreshToken":refreshToken});
-
-}
 
 
-export const signin=async(req:Request,res:Response,next:NextFunction)=>{
-  
-  const {email , userName,password,tokenData}=req.body;
+  user = await prisma.user.create({
+    data: {
+      userName,
+      email: email,
+      password: hashSync(password, 10),
 
-  const user=await prisma.user.findFirst({
-    where:{
-      email:email
     }
   });
-  if(!user){
-   throw new NotFoundException("User not found",ErrorCode.NOT_FOUND);
-  }
-  const checkPassword=compareSync (
-    password,
-    user?.password,
-    );
-    if(!checkPassword){
-    throw  new BadRequest("Password incorrect",
-      ErrorCode.BAD_REQUEST)
-    }
-    const token=jwt.sign({
-      id:user.id,
-    },
-      tokenKey, 
-      { expiresIn: '15m' }
-    );
 
-    const refreshToken=jwt.sign({
-      id:user.id,
-    },
-      refreshTokenKey, 
-      { expiresIn: '2 days' }
-    );
- 
-  const s=  await prisma.tokens.createMany({
-     
-      data:[{
-        token:token,
-        userId:user.id
-      },
-      {  token:refreshToken,
-        userId:user.id
-     }
-     ],
-      
-    });
+  const refreshToken = jwt.sign({
+    id: user.id,
+  },
+    refreshTokenKey,
+    { expiresIn: '30 days' }
+  );
 
-    res.status(200).json({
-     "user":user,"token":token ,"refreshToken":refreshToken 
-    })
+  res.status(200).json({ "user": user, "refreshToken": refreshToken });
 
 }
 
-export const me=async(req:Request,res:Response)=>{
+
+export const signin = async (req: Request, res: Response, next: NextFunction) => {
+
+  const { email, userName, password, tokenData } = req.body;
+
+  const user = await prisma.user.findFirst({
+    where: {
+      email: email
+    }
+  });
+  if (!user) {
+    throw new NotFoundException("User not found", ErrorCode.NOT_FOUND);
+  }
+  const checkPassword = compareSync(
+    password,
+    user?.password,
+  );
+  if (!checkPassword) {
+    throw new BadRequest("Password incorrect",
+      ErrorCode.BAD_REQUEST)
+  }
+  const token = jwt.sign({
+    id: user.id,
+  },
+    tokenKey,
+    { expiresIn: '1h' }
+  );
+
+  const refreshToken = jwt.sign({
+    id: user.id,
+  },
+    refreshTokenKey,
+    { expiresIn: '30 days' }
+  );
+
+  const s = await prisma.tokens.createMany({
+
+    data: [{
+      token: token,
+      userId: user.id
+    },
+    {
+      token: refreshToken,
+      userId: user.id
+    }
+    ],
+
+  });
+
+  res.status(200).json({
+    "user": user, "token": token, "refreshToken": refreshToken
+  })
+
+}
+
+export const me = async (req: Request, res: Response) => {
   return res.status(200).json(req?.user);
 }
 
 
-export const logOut=async(req:Request,res:Response)=>{
+export const logOut = async (req: Request, res: Response) => {
   //: TODO freshly signed up user can't log out
-  const token=req.headers.authorization;
+  const token = req.headers.authorization;
 
-//  try{client.connect()
-//   .then(async (client) => {
-//     console.log('connected');
-//     // Write your own code here
-//     const t=await client.set("token",token!);
-//     console.log(t);
-    
-//   })}
-//   catch(err) {
-//    throw  new BadRequest("Unable to retrieve cache token",
-//       ErrorCode.UNAUTHORIZED,);
-//     // console.log('err happened' + err);
-//   };
-//   await  client.quit();
-   
+  //  try{client.connect()
+  //   .then(async (client) => {
+  //     console.log('connected');
+  //     // Write your own code here
+  //     const t=await client.set("token",token!);
+  //     console.log(t);
+
+  //   })}
+  //   catch(err) {
+  //    throw  new BadRequest("Unable to retrieve cache token",
+  //       ErrorCode.UNAUTHORIZED,);
+  //     // console.log('err happened' + err);
+  //   };
+  //   await  client.quit();
+
 
   await prisma.tokens.update({
-    where:{
-      token:token
+    where: {
+      token: token
     },
-    data:{
-      isValid:false
+    data: {
+      isValid: false
     }
   });
-  res.status(200).json({"message":"Logout successful"});
+  res.status(200).json({ "message": "Logout successful" });
 }
 
-export const refreshToken=async(req:Request, res:Response)=>{
-  const refreshToken=req.headers.authorization;
+export const refreshToken = async (req: Request, res: Response) => {
+  const refreshToken = req.headers.authorization;
 
-const refreshPayload=  jwt.verify(
-    refreshToken!, 
- refreshTokenKey    
-) as any;
-if(!refreshPayload){
-  throw new BadRequest("Refresh token is not valid",ErrorCode.UNAUTHORIZED);
-}
-  const token=jwt.sign({
-    id:refreshPayload.id,
+  const refreshPayload = jwt.verify(
+    refreshToken!,
+    refreshTokenKey
+  ) as any;
+  if (!refreshPayload) {
+    throw new BadRequest("Refresh token is not valid", ErrorCode.UNAUTHORIZED);
+  }
+  const token = jwt.sign({
+    id: refreshPayload.id,
   },
-    tokenKey, 
+    tokenKey,
     { expiresIn: '1h' }
   );
 
 
-   await prisma.tokens.create({
-     
-    data:{
-      token:token,
-      userId:refreshPayload.id,
+  await prisma.tokens.create({
+
+    data: {
+      token: token,
+      userId: refreshPayload.id,
     },
-    
+
   });
-res.status(200).json({"token":token});
+  res.status(200).json({ "token": token });
 
 }

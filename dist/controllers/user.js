@@ -24,10 +24,14 @@ exports.userProfileUpdate = userProfileUpdate;
 const updatePicture = async (req, res) => {
     var _a;
     const { data } = req.body;
-    const byteArrayBuffer = node_fs_1.default.readFileSync('../assets/god_of war.png');
+    const byteArrayBuffer = node_fs_1.default.readFileSync('../assets/download.jpeg');
+    let url = "";
     const uploadResult = await new Promise((resolve) => {
         cloudinary_1.default.v2.uploader.upload_stream((error, uploadResult) => {
-            return resolve(uploadResult);
+            url = uploadResult === null || uploadResult === void 0 ? void 0 : uploadResult.secure_url;
+            console.log(url);
+            (url);
+            return resolve(uploadResult === null || uploadResult === void 0 ? void 0 : uploadResult.secure_url);
         }).end(byteArrayBuffer);
     });
     console.log(uploadResult);
@@ -36,7 +40,7 @@ const updatePicture = async (req, res) => {
             id: (_a = req === null || req === void 0 ? void 0 : req.user) === null || _a === void 0 ? void 0 : _a.id
         },
         data: {
-            profile: data
+            profile: url
         }
     });
     res.status(200).json({ "profile": user.profile });

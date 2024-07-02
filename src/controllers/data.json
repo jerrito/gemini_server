@@ -1,0 +1,309 @@
+{
+  "food": [
+    {
+      "name": "Fresh Produce",
+      "children": [
+        {
+          "name": "Fruits",
+          "children": [
+            { "name": "Tropical Fruits" },
+            { "name": "Pome Fruits" },
+            { "name": "Citrus Fruits" },
+            { "name": "Berries" },
+            { "name": "Melons" },
+            { "name": "Stone Fruits" },
+            { "name": "Exotic Fruits" },
+            { "name": "Grapes" },
+            { "name": "Dried Fruits" }
+          ]
+        },
+        {
+          "name": "Vegetables",
+          "children": [
+            { "name": "Leafy Greens" },
+            { "name": "Root Vegetables" },
+            { "name": "Squashes" },
+            { "name": "Peppers" },
+            { "name": "Tomatoes" },
+            { "name": "Onions & Garlic" },
+            { "name": "Mushrooms" },
+            { "name": "Cruciferous Vegetables" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Meat & Seafood",
+      "children": [
+        {
+          "name": "Meat",
+          "children": [
+            { "name": "Beef" },
+            { "name": "Chicken" },
+            { "name": "Pork" },
+            { "name": "Lamb" },
+            { "name": "Turkey" },
+            { "name": "Veal" }
+          ]
+        },
+        {
+          "name": "Seafood",
+          "children": [
+            { "name": "Fish" },
+            { "name": "Shellfish" },
+            { "name": "Crustaceans" },
+            { "name": "Smoked Fish" },
+            { "name": "Frozen Seafood" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Dairy & Eggs",
+      "children": [
+        {
+          "name": "Milk & Cream",
+          "children": [
+            { "name": "Whole Milk" },
+            { "name": "Skimmed Milk" },
+            { "name": "Plant-Based Milk" }
+          ]
+        },
+        {
+          "name": "Cheese",
+          "children": [
+            { "name": "Hard Cheese" },
+            { "name": "Soft Cheese" },
+            { "name": "Specialty Cheese" }
+          ]
+        },
+        {
+          "name": "Yogurt",
+          "children": [
+            { "name": "Greek Yogurt" },
+            { "name": "Flavored Yogurt" },
+            { "name": "Plant-Based Yogurt" }
+          ]
+        },
+        {
+          "name": "Butter & Margarine"
+        },
+        {
+          "name": "Eggs",
+          "children": [
+            { "name": "Free-Range Eggs" },
+            { "name": "Organic Eggs" },
+            { "name": "Liquid Eggs" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pantry Staples",
+      "children": [
+        {
+          "name": "Grains & Rice",
+          "children": [
+            { "name": "White Rice" },
+            { "name": "Brown Rice" },
+            { "name": "Quinoa" },
+            { "name": "Barley" },
+            { "name": "Couscous" }
+          ]
+        },
+        {
+          "name": "Pasta & Noodles",
+          "children": [
+            { "name": "Spaghetti" },
+            { "name": "Macaroni" },
+            { "name": "Rice Noodles" },
+            { "name": "Instant Noodles" }
+          ]
+        },
+        {
+          "name": "Flours & Baking Supplies",
+          "children": [
+            { "name": "All-Purpose Flour" },
+            { "name": "Whole Wheat Flour" },
+            { "name": "Baking Powder" },
+            { "name": "Yeast" }
+          ]
+        },
+        {
+          "name": "Canned & Jarred Goods",
+          "children": [
+            { "name": "Beans & Legumes" },
+            { "name": "Vegetables" },
+            { "name": "Fruits" },
+            { "name": "Soups & Broths" },
+            { "name": "Sauces & Condiments" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Beverages",
+      "children": [
+        {
+          "name": "Water",
+          "children": [{ "name": "Still Water" }, { "name": "Sparkling Water" }]
+        },
+        {
+          "name": "Juices",
+          "children": [
+            { "name": "Orange Juice" },
+            { "name": "Apple Juice" },
+            { "name": "Mixed Fruit Juice" },
+            { "name": "Vegetable Juice" }
+          ]
+        },
+        {
+          "name": "Soft Drinks",
+          "children": [
+            { "name": "Cola" },
+            { "name": "Lemon-Lime" },
+            { "name": "Root Beer" },
+            { "name": "Ginger Ale" }
+          ]
+        },
+        {
+          "name": "Tea & Coffee",
+          "children": [
+            { "name": "Black Tea" },
+            { "name": "Green Tea" },
+            { "name": "Herbal Tea" },
+            { "name": "Ground Coffee" },
+            { "name": "Instant Coffee" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Snacks & Sweets",
+      "children": [
+        {
+          "name": "Chips & Crisps",
+          "children": [
+            { "name": "Potato Chips" },
+            { "name": "Tortilla Chips" },
+            { "name": "Vegetable Chips" }
+          ]
+        },
+        {
+          "name": "Nuts & Seeds",
+          "children": [
+            { "name": "Almonds" },
+            { "name": "Cashews" },
+            { "name": "Mixed Nuts" },
+            { "name": "Sunflower Seeds" }
+          ]
+        },
+        {
+          "name": "Chocolates & Candies",
+          "children": [
+            { "name": "Chocolate Bars" },
+            { "name": "Gummies" },
+            { "name": "Hard Candies" },
+            { "name": "Toffees" }
+          ]
+        },
+        {
+          "name": "Cookies & Crackers",
+          "children": [
+            { "name": "Sweet Cookies" },
+            { "name": "Savory Crackers" },
+            { "name": "Rice Cakes" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Frozen Foods",
+      "children": [
+        {
+          "name": "Frozen Vegetables",
+          "children": [
+            { "name": "Peas" },
+            { "name": "Corn" },
+            { "name": "Mixed Vegetables" }
+          ]
+        },
+        {
+          "name": "Frozen Meals",
+          "children": [
+            { "name": "Pizza" },
+            { "name": "Lasagna" },
+            { "name": "TV Dinners" }
+          ]
+        },
+        {
+          "name": "Ice Cream & Desserts",
+          "children": [
+            { "name": "Ice Cream Tubs" },
+            { "name": "Ice Cream Bars" },
+            { "name": "Frozen Yogurt" },
+            { "name": "Sorbet" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Household Supplies",
+      "children": [
+        {
+          "name": "Cleaning Supplies",
+          "children": [
+            { "name": "Detergents" },
+            { "name": "All-Purpose Cleaners" },
+            { "name": "Dish Soap" }
+          ]
+        },
+        {
+          "name": "Paper Products",
+          "children": [
+            { "name": "Toilet Paper" },
+            { "name": "Paper Towels" },
+            { "name": "Tissues" }
+          ]
+        },
+        {
+          "name": "Trash Bags & Storage",
+          "children": [
+            { "name": "Trash Bags" },
+            { "name": "Storage Containers" },
+            { "name": "Food Wraps" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Personal Care",
+      "children": [
+        {
+          "name": "Bath & Body",
+          "children": [
+            { "name": "Soap" },
+            { "name": "Body Wash" },
+            { "name": "Lotion" }
+          ]
+        },
+        {
+          "name": "Hair Care",
+          "children": [
+            { "name": "Shampoo" },
+            { "name": "Conditioner" },
+            { "name": "Hair Treatments" }
+          ]
+        },
+        {
+          "name": "Oral Care",
+          "children": [
+            { "name": "Toothpaste" },
+            { "name": "Toothbrushes" },
+            { "name": "Mouthwash" }
+          ]
+        }
+      ]
+    }
+  ]
+}

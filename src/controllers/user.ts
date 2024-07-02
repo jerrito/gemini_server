@@ -29,10 +29,14 @@ export const userProfileUpdate=async(req:Request,res:Response)=>{
 export  const updatePicture=async(req:Request, res:Response)=>{
   
     const {data}=req.body;
-    const byteArrayBuffer = fs.readFileSync('../assets/god_of war.png');
+    const byteArrayBuffer = fs.readFileSync('../assets/download.jpeg');
+   let url:string="";
     const uploadResult = await new Promise((resolve) => {
         cloudinary.v2.uploader.upload_stream((error, uploadResult) => {
-            return resolve(uploadResult);
+            url=uploadResult?.secure_url!;
+            console.log(url);
+            (url);
+            return resolve(uploadResult?.secure_url);
         }).end(byteArrayBuffer);
   
     });
@@ -43,7 +47,7 @@ export  const updatePicture=async(req:Request, res:Response)=>{
             id:req?.user?.id
         },
         data:{
-            profile:data
+            profile:url
         }
     });
     

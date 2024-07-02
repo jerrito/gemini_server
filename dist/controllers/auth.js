@@ -53,7 +53,7 @@ const signup = async (req, res, next) => {
     });
     const refreshToken = jwt.sign({
         id: user.id,
-    }, secrets_1.refreshTokenKey, { expiresIn: '2 days' });
+    }, secrets_1.refreshTokenKey, { expiresIn: '30 days' });
     res.status(200).json({ "user": user, "refreshToken": refreshToken });
 };
 exports.signup = signup;
@@ -73,16 +73,17 @@ const signin = async (req, res, next) => {
     }
     const token = jwt.sign({
         id: user.id,
-    }, secrets_1.tokenKey, { expiresIn: '15m' });
+    }, secrets_1.tokenKey, { expiresIn: '1h' });
     const refreshToken = jwt.sign({
         id: user.id,
-    }, secrets_1.refreshTokenKey, { expiresIn: '2 days' });
+    }, secrets_1.refreshTokenKey, { expiresIn: '30 days' });
     const s = await prisma_client_1.prisma.tokens.createMany({
         data: [{
                 token: token,
                 userId: user.id
             },
-            { token: refreshToken,
+            {
+                token: refreshToken,
                 userId: user.id
             }
         ],

@@ -6,6 +6,7 @@ const root_1 = require("./exceptions/root");
 const validation_error_1 = require("./exceptions/validation_error");
 const internal_server_1 = require("./exceptions/internal_server");
 const bad_request_1 = require("./exceptions/bad_request");
+const jsonwebtoken_1 = require("jsonwebtoken");
 const errorHandler = (method) => {
     return async (req, res, next) => {
         try {
@@ -21,14 +22,15 @@ const errorHandler = (method) => {
                 exception = error;
                 next(exception);
             }
+            else if (error instanceof zod_1.ZodError) {
+                next(new validation_error_1.ValidationError("Validation error", error.message));
+            }
+            else if (error instanceof jsonwebtoken_1.TokenExpiredError) {
+                next(new validation_error_1.ValidationError("Token Expired error", error.message));
+            }
             else {
-                if (error instanceof zod_1.ZodError) {
-                    next(new validation_error_1.ValidationError("Validation error", root_1.ErrorCode.ValidationError));
-                }
-                else {
-                    exception = new internal_server_1.InternalException("Something went wrong!", error.toString(), root_1.ErrorCode.InternalServerError);
-                    next(exception);
-                }
+                exception = new internal_server_1.InternalException("Something went wrong!", error.toString(), root_1.ErrorCode.InternalServerError);
+                next(exception);
             }
         }
     };

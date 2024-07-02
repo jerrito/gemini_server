@@ -35,7 +35,7 @@ model dataGenerated{
   data String 
   title String
   hasImage Boolean @default(false)
-  dataImage  Bytes? 
+  dataImage  String? 
   userId Int 
   user User @relation(references: [id], fields: [userId]) 
   @@map("dataGenerated")

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteData = exports.getDataById = exports.listData = exports.createData = void 0;
+exports.deleteMany = exports.deleteData = exports.getDataById = exports.listData = exports.createData = void 0;
 const bad_request_1 = require("../exceptions/bad_request");
 const root_1 = require("../exceptions/root");
 const prisma_client_1 = require("../prisma_client");
@@ -62,3 +62,18 @@ const deleteData = async (req, res) => {
     }
 };
 exports.deleteData = deleteData;
+const deleteMany = async (req, res) => {
+    var _a;
+    const { list } = req.body;
+    console.log(list);
+    for (let i = 0; i < list.length; i++) {
+        await prisma_client_1.prisma.dataGenerated.delete({
+            where: {
+                id: list[i],
+                userId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id
+            }
+        });
+    }
+    res.status(200).json({ "success": true });
+};
+exports.deleteMany = deleteMany;
