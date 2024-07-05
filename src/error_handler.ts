@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { ZodError } from "zod";
 import { ErrorCode, HTTPExceptions } from "./exceptions/root";
 import { ValidationError } from "./exceptions/validation_error";
@@ -8,7 +8,7 @@ import { tokenKey } from "./secrets";
 import { Jwt, TokenExpiredError } from "jsonwebtoken";
 
 export const errorHandler = (method: Function) => {
-    return async (req: Request, res: Response, next: Function) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
         try {
             await method(req, res, next);
         } catch (error: any) {
@@ -17,17 +17,18 @@ export const errorHandler = (method: Function) => {
                 exception = error;
                 next(exception);
             }
-            else if (error instanceof BadRequest) {
-                exception = error;
-                next(exception);
-            }
-            else
+            else {
+                if (error instanceof BadRequest) {
+                    exception = error;
+                    next(exception);
+                }
+
                 if (error instanceof ZodError) {
                     next(new ValidationError(
                         "Validation error",
                         error.message,),);
                 }
-                else if (error instanceof TokenExpiredError) {
+                if (error instanceof TokenExpiredError) {
                     next(
                         new ValidationError(
                             "Token Expired error",
@@ -41,9 +42,8 @@ export const errorHandler = (method: Function) => {
                         ErrorCode.InternalServerError
                     );
                     next(exception);
-
                 }
-
+            }
         }
 
     }

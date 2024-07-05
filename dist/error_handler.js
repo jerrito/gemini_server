@@ -18,19 +18,21 @@ const errorHandler = (method) => {
                 exception = error;
                 next(exception);
             }
-            else if (error instanceof bad_request_1.BadRequest) {
-                exception = error;
-                next(exception);
-            }
-            else if (error instanceof zod_1.ZodError) {
-                next(new validation_error_1.ValidationError("Validation error", error.message));
-            }
-            else if (error instanceof jsonwebtoken_1.TokenExpiredError) {
-                next(new validation_error_1.ValidationError("Token Expired error", error.message));
-            }
             else {
-                exception = new internal_server_1.InternalException("Something went wrong!", error.toString(), root_1.ErrorCode.InternalServerError);
-                next(exception);
+                if (error instanceof bad_request_1.BadRequest) {
+                    exception = error;
+                    next(exception);
+                }
+                if (error instanceof zod_1.ZodError) {
+                    next(new validation_error_1.ValidationError("Validation error", error.message));
+                }
+                if (error instanceof jsonwebtoken_1.TokenExpiredError) {
+                    next(new validation_error_1.ValidationError("Token Expired error", error.message));
+                }
+                else {
+                    exception = new internal_server_1.InternalException("Something went wrong!", error.toString(), root_1.ErrorCode.InternalServerError);
+                    next(exception);
+                }
             }
         }
     };

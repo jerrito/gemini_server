@@ -2,10 +2,10 @@ import express, { Request, Response, NextFunction } from "express";
 import { BadRequest } from "../exceptions/bad_request";
 import { ErrorCode } from "../exceptions/root";
 import { prisma } from "../prisma_client";
-import { dataSchema } from "../validation/data";
+import { dataSchema, listDataSchema } from "../validation/data";
 
 
-export const createData = async (req: Request, res: Response) => {
+export const createData = async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = dataSchema.parse(req.body);
     console.log(req!.user!.id!);
     const dataGenerated = await prisma.dataGenerated.create({
@@ -42,7 +42,7 @@ export const listData = async (req: Request, res: Response, next: NextFunction) 
 }
 
 
-export const getDataById = async (req: Request, res: Response) => {
+export const getDataById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await prisma.dataGenerated.findFirstOrThrow({
             where: {
@@ -61,7 +61,7 @@ export const getDataById = async (req: Request, res: Response) => {
 }
 
 
-export const deleteData = async (req: Request, res: Response) => {
+export const deleteData = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
         await prisma.dataGenerated.delete({
@@ -86,7 +86,9 @@ export const deleteData = async (req: Request, res: Response) => {
 export const deleteMany = async (req: Request, res: Response) => {
 
     const { list } = req.body;
+    const validationSchema = listDataSchema.parse(req.body);
     console.log(list);
+
 
     for (let i = 0; i < list.length; i++) {
 
@@ -94,12 +96,12 @@ export const deleteMany = async (req: Request, res: Response) => {
         await prisma.dataGenerated.delete({
 
             where: {
-                id: list[i] as number
+                id: validationSchema.list[i]
                 ,
                 userId: req.user?.id
             }
         });
 
     }
-    res.status(200).json({ "success": true });
+    return res.status(200).json({ "success": true });
 }

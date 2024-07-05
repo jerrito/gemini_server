@@ -19,5 +19,6 @@ var ErrorCode;
     ErrorCode[ErrorCode["VALIDATION_ERROR"] = 400] = "VALIDATION_ERROR";
     ErrorCode[ErrorCode["InternalServerError"] = 500] = "InternalServerError";
     ErrorCode[ErrorCode["UNAUTHORIZED"] = 401] = "UNAUTHORIZED";
+    ErrorCode[ErrorCode["Password_Wrong"] = 407] = "Password_Wrong";
     ErrorCode[ErrorCode["ValidationError"] = 409] = "ValidationError";
 })(ErrorCode = exports.ErrorCode || (exports.ErrorCode = {}));

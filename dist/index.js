@@ -3,25 +3,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prismaClient = exports.client = void 0;
+exports.prismaClient = exports.client = exports.cloudinaryConfig = void 0;
 const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
 const secrets_1 = require("./secrets");
 const errot_1 = require("./middlewares/errot");
 const root_1 = __importDefault(require("./routes/root"));
 const redis_1 = require("redis");
+const cloudinary_1 = __importDefault(require("cloudinary"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(root_1.default);
+exports.cloudinaryConfig = cloudinary_1.default.v2.config({
+    cloud_name: 'du6xt1im8',
+    api_key: secrets_1.cloudinaryApiKey,
+    api_secret: secrets_1.cloudinaryApiSecret
+});
 exports.client = (0, redis_1.createClient)({
-    password: 'vdU1XGlbkHGttyobsqSP8L94doTIcMg2',
+    password: secrets_1.redisPassword,
     socket: {
-        host: 'redis-14611.c73.us-east-1-2.ec2.redns.redis-cloud.com',
+        host: secrets_1.redisHost,
         port: 14611
     },
     legacyMode: true,
 });
-// export const client=()=>await clientGet.then();
 exports.prismaClient = new client_1.PrismaClient({
     log: ["query"],
 });
