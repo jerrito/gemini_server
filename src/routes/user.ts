@@ -9,9 +9,9 @@ export const userRouter: Router = express.Router();
 
 
 
-userRouter.put("/user/update-profile", [authMiddleware], errorHandler(userProfileUpdate,),);
+userRouter.put("/profile", [authMiddleware], errorHandler(userProfileUpdate,),);
 
-userRouter.put("/user/profile", [authMiddleware], errorHandler(updatePicture,),);
+userRouter.put("/profile/picture", [authMiddleware], errorHandler(updatePicture,),);
 
-userRouter.put("/user/profile/password", [authMiddleware], errorHandler(changePassword,),);
+userRouter.put("/profile/password", [authMiddleware], errorHandler(changePassword,),);
 

@@ -15,7 +15,7 @@ rootRouter.use("/api/auth", auth_1.default);
 // data route
 rootRouter.use("/api", data_1.default);
 // user 
-rootRouter.use("/api", user_1.userRouter);
+rootRouter.use("/api/user", user_1.userRouter);
 cloudinary_1.default.v2.config({
     cloud_name: 'du6xt1im8',
     api_key: secrets_1.cloudinaryApiKey,

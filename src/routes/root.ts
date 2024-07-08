@@ -16,7 +16,7 @@ rootRouter.use("/api/auth",authRouter);
 rootRouter.use("/api",dataRoute);
 
 // user 
-rootRouter.use("/api",userRouter)
+rootRouter.use("/api/user",userRouter)
 
 cloudinary.v2.config({ 
     cloud_name: 'du6xt1im8', 
