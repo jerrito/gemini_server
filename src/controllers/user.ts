@@ -12,25 +12,30 @@ import { compareSync, hashSync } from "bcrypt";
 import cloudinaryConfig from "index";
 
 export const userProfileUpdate = async (req: Request, res: Response) => {
-
-    const { userName } = req.body;
+    var email: any = req.query.email;
+    var userName: any = req.query.userName;
+    console.log(email);
+    console.log("jdj");
 
     const user = await prisma.user.update({
         where: {
             id: req.user?.id
         },
         data: {
+            email,
             userName
         }
     });
+    res.json(user);
 
-    res.status(200).json(user);
+
+
 
 
 }
 
 export const updatePicture = async (req: Request, res: Response) => {
-    const { data } = req.body;
+    const  data  = req.query.data;
     // const byteArrayBuffer = fs.readFileSync(pic);
     let url: string = "";
     try {
@@ -45,9 +50,9 @@ export const updatePicture = async (req: Request, res: Response) => {
 
         });
     }
-    catch (e) {
+    catch (e:any) {
         throw new BadRequest(
-            "Error uploading file ",
+            e.toString(),
             ErrorCode.BAD_REQUEST
         );
     }

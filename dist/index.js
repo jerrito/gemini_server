@@ -11,9 +11,11 @@ const errot_1 = require("./middlewares/errot");
 const root_1 = __importDefault(require("./routes/root"));
 const redis_1 = require("redis");
 const cloudinary_1 = __importDefault(require("cloudinary"));
+const body_parser_1 = __importDefault(require("body-parser"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(root_1.default);
+app.use(body_parser_1.default.raw({ type: 'application/octet-stream', limit: '10mb' }));
 exports.cloudinaryConfig = cloudinary_1.default.v2.config({
     cloud_name: 'du6xt1im8',
     api_key: secrets_1.cloudinaryApiKey,

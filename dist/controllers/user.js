@@ -13,21 +13,25 @@ const root_1 = require("../exceptions/root");
 const bcrypt_1 = require("bcrypt");
 const userProfileUpdate = async (req, res) => {
     var _a;
-    const { userName } = req.body;
+    var email = req.query.email;
+    var userName = req.query.userName;
+    console.log(email);
+    console.log("jdj");
     const user = await prisma_client_1.prisma.user.update({
         where: {
             id: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id
         },
         data: {
+            email,
             userName
         }
     });
-    res.status(200).json(user);
+    res.json(user);
 };
 exports.userProfileUpdate = userProfileUpdate;
 const updatePicture = async (req, res) => {
     var _a;
-    const { data } = req.body;
+    const data = req.query.data;
     // const byteArrayBuffer = fs.readFileSync(pic);
     let url = "";
     try {
@@ -41,7 +45,7 @@ const updatePicture = async (req, res) => {
         });
     }
     catch (e) {
-        throw new bad_request_1.BadRequest("Error uploading file ", root_1.ErrorCode.BAD_REQUEST);
+        throw new bad_request_1.BadRequest(e.toString(), root_1.ErrorCode.BAD_REQUEST);
     }
     const user = await prisma_client_1.prisma.user.update({
         where: {

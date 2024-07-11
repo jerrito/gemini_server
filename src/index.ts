@@ -7,12 +7,17 @@ import { errorMiddleware } from "./middlewares/errot";
 import rootRouter from "./routes/root";
 import redis, { createClient } from 'redis';
 import cloudinary from 'cloudinary';
+import bodyParser from 'body-parser';
+
 import util from "util";
 const app: Express = express();
+
 
 app.use(express.json());
 
 app.use(rootRouter);
+
+app.use(bodyParser.raw({ type: 'application/octet-stream', limit: '10mb' }));
 
 export const cloudinaryConfig = cloudinary.v2.config({
     cloud_name: 'du6xt1im8',
