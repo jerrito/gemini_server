@@ -1,4 +1,4 @@
-import { string, z } from "zod";
+import { array, number, string, z } from "zod";
 
 export const userValidation = z.object({
     userName: string().min(2,
@@ -12,4 +12,8 @@ export const passwordSchema = z.object({
     old_password: string().min(6),
     new_password: string().min(6),
     confirm_password: string().min(6),
+})
+
+export const imageSchema=z.object({
+    data:number().array(),
 })

@@ -10,12 +10,24 @@ import fs from "node:fs"
 // import kratos from "../assets/images/god_of war.png";
 import { compareSync, hashSync } from "bcrypt";
 import cloudinaryConfig from "index";
+import { imageSchema, passwordSchema } from "validation/user";
 
 export const userProfileUpdate = async (req: Request, res: Response) => {
     var email: any = req.query.email;
     var userName: any = req.query.userName;
-    console.log(email);
-    console.log("jdj");
+
+    const checkAlreadyExist = await prisma.user.findFirstOrThrow({
+        where: {
+            email,
+            userName
+        }
+    });
+    if (checkAlreadyExist) {
+        throw new BadRequest(
+            email ? "UserName already exist" : "Email already exist",
+            ErrorCode.BAD_REQUEST
+        );
+    }
 
     const user = await prisma.user.update({
         where: {
@@ -26,16 +38,13 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
             userName
         }
     });
-    res.json(user);
-
-
-
-
+    res.status(200).json({"userName":user.userName,"email":user.email});
 
 }
 
 export const updatePicture = async (req: Request, res: Response) => {
-    const  data  = req.query.data;
+    const { data } = req.body;
+    const validatedImageArray = imageSchema.parse(req.body);
     // const byteArrayBuffer = fs.readFileSync(pic);
     let url: string = "";
     try {
@@ -46,11 +55,11 @@ export const updatePicture = async (req: Request, res: Response) => {
                 console.log(url);
                 (url);
                 return resolve(uploadResult?.secure_url);
-            }).end(data);
+            }).end(validatedImageArray);
 
         });
     }
-    catch (e:any) {
+    catch (e: any) {
         throw new BadRequest(
             e.toString(),
             ErrorCode.BAD_REQUEST
@@ -74,9 +83,8 @@ export const updatePicture = async (req: Request, res: Response) => {
 
 export const changePassword = async (req: Request, res: Response) => {
 
-    const { old_password, new_password, confirm_password } = req.body;
 
-
+    const passwordValidator = passwordSchema.parse(req.body);
 
 
     const user = await prisma.user.findFirstOrThrow({
@@ -85,7 +93,7 @@ export const changePassword = async (req: Request, res: Response) => {
         }
     });
 
-    const checkOldPassword = compareSync(old_password, user.password);
+    const checkOldPassword = compareSync(passwordValidator.old_password, user.password);
     if (!checkOldPassword) {
         throw new BadRequest(
             "old password is incorrect",
@@ -93,14 +101,14 @@ export const changePassword = async (req: Request, res: Response) => {
         )
     }
 
-    if (new_password !== confirm_password) {
+    if (passwordValidator.new_password !== passwordValidator.confirm_password) {
 
         throw new BadRequest(
             "new password and confirm password are not same",
             ErrorCode.Password_Wrong
         );
     }
-    const hashPassword = hashSync(new_password, 10);
+    const hashPassword = hashSync(passwordValidator.new_password, 10);
     const userUpdate = await prisma.user.update({
         where: {
             id: req!.user!.id
