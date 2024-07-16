@@ -10,7 +10,8 @@ import fs from "node:fs"
 // import kratos from "../assets/images/god_of war.png";
 import { compareSync, hashSync } from "bcrypt";
 import cloudinaryConfig from "index";
-import { imageSchema, passwordSchema } from "validation/user";
+import { imageSchema, passwordSchema } from "../validation/user";
+
 
 export const userProfileUpdate = async (req: Request, res: Response) => {
     var email: any = req.query.email;
@@ -45,6 +46,7 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
 export const updatePicture = async (req: Request, res: Response) => {
     const { data } = req.body;
     const validatedImageArray = imageSchema.parse(req.body);
+    console.log(validatedImageArray);
     // const byteArrayBuffer = fs.readFileSync(pic);
     let url: string = "";
     try {

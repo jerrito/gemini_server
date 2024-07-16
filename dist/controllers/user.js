@@ -11,7 +11,7 @@ const root_1 = require("../exceptions/root");
 // import pic from "../assets/images/download.jpeg";
 // import kratos from "../assets/images/god_of war.png";
 const bcrypt_1 = require("bcrypt");
-const user_1 = require("validation/user");
+const user_1 = require("../validation/user");
 const userProfileUpdate = async (req, res) => {
     var _a;
     var email = req.query.email;
@@ -41,6 +41,7 @@ const updatePicture = async (req, res) => {
     var _a;
     const { data } = req.body;
     const validatedImageArray = user_1.imageSchema.parse(req.body);
+    console.log(validatedImageArray);
     // const byteArrayBuffer = fs.readFileSync(pic);
     let url = "";
     try {
