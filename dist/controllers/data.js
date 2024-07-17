@@ -29,9 +29,6 @@ const listData = async (req, res, next) => {
         },
         where: {
             userId: req.user.id,
-        },
-        select: {
-            title: true
         }
     });
     if (data.length == 0) {

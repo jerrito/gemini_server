@@ -32,9 +32,6 @@ export const listData = async (req: Request, res: Response, next: NextFunction) 
         },
         where: {
             userId: req!.user!.id!,
-        },
-        select: {
-            title: true
         }
     });
     if (data.length == 0) {
