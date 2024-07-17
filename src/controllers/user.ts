@@ -57,7 +57,7 @@ export const updatePicture = async (req: Request, res: Response) => {
                 console.log(url);
                 (url);
                 return resolve(uploadResult?.secure_url);
-            }).end(validatedImageArray);
+            }).end(validatedImageArray.data);
 
         });
     }
