@@ -19,7 +19,7 @@ app.use(express.json({
 
 app.use(rootRouter);
 
-app.use(bodyParser.raw({ type: 'application/octet-stream', limit: '10mb' }));
+app.use(bodyParser.json({ type: 'application/json', limit: '50mb' }));
 
 export const cloudinaryConfig = cloudinary.v2.config({
     cloud_name: cloudinaryName,

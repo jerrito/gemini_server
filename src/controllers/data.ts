@@ -27,14 +27,14 @@ export const listData = async (req: Request, res: Response, next: NextFunction) 
     const count = await prisma.dataGenerated.count();
     const data = await prisma.dataGenerated.findMany({
         take: 10,
-        orderBy:{
-            id:'asc' 
+        orderBy: {
+            id: 'desc'
         },
         where: {
             userId: req!.user!.id!,
         },
-        select:{
-            title:true
+        select: {
+            title: true
         }
     });
     if (data.length == 0) {

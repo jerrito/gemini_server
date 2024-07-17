@@ -24,8 +24,14 @@ const listData = async (req, res, next) => {
     const count = await prisma_client_1.prisma.dataGenerated.count();
     const data = await prisma_client_1.prisma.dataGenerated.findMany({
         take: 10,
+        orderBy: {
+            id: 'desc'
+        },
         where: {
             userId: req.user.id,
+        },
+        select: {
+            title: true
         }
     });
     if (data.length == 0) {
