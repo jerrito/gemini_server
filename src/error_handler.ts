@@ -7,10 +7,14 @@ import { BadRequest } from "./exceptions/bad_request";
 import { tokenKey } from "./secrets";
 import { Jwt, TokenExpiredError } from "jsonwebtoken";
 
+// error handler
 export const errorHandler = (method: Function) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
+
+            // method
             await method(req, res, next);
+        
         } catch (error: any) {
             let exception: HTTPExceptions;
             if (error instanceof HTTPExceptions) {

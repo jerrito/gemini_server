@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 
-
+// data schema
 export const dataSchema = z.object(
   {
     data: z.string(),
@@ -12,6 +12,7 @@ export const dataSchema = z.object(
   }
 )
 
+//list data schema
 export const listDataSchema = z.object({
   list: z.number().array().nonempty()
 })

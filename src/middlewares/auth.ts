@@ -10,7 +10,7 @@ import redis,{ createClient } from "redis";
 import { client } from "..";
 const connectionString = `${process.env.DATABASE_URL}`
 
-
+// auth middleware
  const authMiddleware =async (req:Request,res:Response,next:NextFunction)=>{
 
 

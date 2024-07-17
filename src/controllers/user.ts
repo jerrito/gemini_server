@@ -13,6 +13,7 @@ import cloudinaryConfig from "index";
 import { imageSchema, passwordSchema } from "../validation/user";
 
 
+// update user profile
 export const userProfileUpdate = async (req: Request, res: Response) => {
     var email: any = req.query.email;
     var userName: any = req.query.userName;
@@ -39,14 +40,16 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
             userName
         }
     });
-    res.status(200).json({"userName":user.userName,"email":user.email});
+    res.status(200).json({ "userName": user.userName, "email": user.email });
 
 }
 
+
+// update profile picture
 export const updatePicture = async (req: Request, res: Response) => {
     const { data } = req.body;
     const validatedImageArray = imageSchema.parse(req.body);
-    console.log(validatedImageArray);
+    console.log(validatedImageArray.data);
     // const byteArrayBuffer = fs.readFileSync(pic);
     let url: string = "";
     try {
@@ -55,9 +58,10 @@ export const updatePicture = async (req: Request, res: Response) => {
             cloudinary.v2.uploader.upload_stream((error, uploadResult) => {
                 url = uploadResult?.secure_url!;
                 console.log(url);
-                (url);
+                console.log(error);
                 return resolve(uploadResult?.secure_url);
-            }).end(validatedImageArray.data);
+            }
+            ).end(validatedImageArray.data);
 
         });
     }
@@ -67,8 +71,6 @@ export const updatePicture = async (req: Request, res: Response) => {
             ErrorCode.BAD_REQUEST
         );
     }
-
-
 
     const user = await prisma.user.update({
         where: {
@@ -83,11 +85,10 @@ export const updatePicture = async (req: Request, res: Response) => {
 }
 
 
+//change password
 export const changePassword = async (req: Request, res: Response) => {
 
-
     const passwordValidator = passwordSchema.parse(req.body);
-
 
     const user = await prisma.user.findFirstOrThrow({
         where: {

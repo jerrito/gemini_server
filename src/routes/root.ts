@@ -18,15 +18,11 @@ rootRouter.use("/api",dataRoute);
 // user 
 rootRouter.use("/api/user",userRouter)
 
-cloudinary.v2.config({ 
-    cloud_name: 'du6xt1im8', 
-    api_key: cloudinaryApiKey, 
-    api_secret: cloudinaryApiSecret
-  });
+
   const data=async()=>{
     const mage='../assets/god_of war.png';
-    cloudinary.v2.uploader.upload(mage).then(result => {
-        console.log(result);
+    cloudinary.v2.uploader.upload_large(mage).then(result => {
+        console.log(result.secure_url);
       })
 //   const byteArrayBuffer = fs.readFileSync('../assets/god_of war.png');
 //   const uploadResult = await new Promise((resolve) => {

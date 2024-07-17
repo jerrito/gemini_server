@@ -6,10 +6,19 @@ import { errorHandler } from "../error_handler";
 
 const dataRoute: Router = express.Router();
 
+//! Create  Data
 dataRoute.post("/data", [authMiddleware], errorHandler(createData));
+
+//! List Data
 dataRoute.get("/data", [authMiddleware], errorHandler(listData));
+
+// Delete Data
 dataRoute.delete("/data/:id", [authMiddleware], errorHandler(deleteData));
+
+//! DeleteMany 
 dataRoute.delete("/data/delete/list", [authMiddleware], errorHandler(deleteMany));
+
+//! Get Data By Id
 dataRoute.get("/data/:id", [authMiddleware], errorHandler(getDataById));
 
 

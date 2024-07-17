@@ -9,7 +9,6 @@ import redis, { createClient } from 'redis';
 import cloudinary from 'cloudinary';
 import bodyParser from 'body-parser';
 
-import util from "util";
 const app: Express = express();
 
 
@@ -17,16 +16,20 @@ app.use(express.json({
     limit: '50mb'
 }));
 
+// use root route
 app.use(rootRouter);
 
 app.use(bodyParser.json({ type: 'application/json', limit: '50mb' }));
 
+
+//cloudinary config
 export const cloudinaryConfig = cloudinary.v2.config({
     cloud_name: cloudinaryName,
     api_key: cloudinaryApiKey,
     api_secret: cloudinaryApiSecret
 });
 
+// redis client config
 export const client = createClient({
     password: redisPassword,
     socket: {
@@ -40,14 +43,15 @@ export const client = createClient({
 
 export const prismaClient = new PrismaClient({
     log: ["query"],
-
 })
 
+
+// use error middleware
 app.use(errorMiddleware);
 
 
 
-
+//port listening
 
 app.listen(Number(PORT), () => {
     console.log(`Server is started at port ${PORT}`)

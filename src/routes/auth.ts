@@ -7,19 +7,19 @@ const authRouter = express.Router();
 
 
 
-// signup
+//! signup
 authRouter.post("/signup", errorHandler(signup));
 
-// signin
+//! signin
 authRouter.post("/signin", errorHandler(signin));
 
-//get user
+//! get user
 authRouter.get("/me", [authMiddleware], errorHandler(me));
 
-//log out 
+//! log out 
 authRouter.post("/logout", errorHandler(logout));
 
-// refresh token
+//! refresh token
 authRouter.post("/refresh", errorHandler(refreshToken))
 
 

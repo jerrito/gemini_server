@@ -4,7 +4,7 @@ import { ErrorCode } from "../exceptions/root";
 import { prisma } from "../prisma_client";
 import { dataSchema, listDataSchema } from "../validation/data";
 
-
+// create Data 
 export const createData = async (req: Request, res: Response, next: NextFunction) => {
     const validatedData = dataSchema.parse(req.body);
     console.log(req!.user!.id!);
@@ -23,6 +23,7 @@ export const createData = async (req: Request, res: Response, next: NextFunction
 }
 
 
+// list Data By Id
 export const listData = async (req: Request, res: Response, next: NextFunction) => {
     const count = await prisma.dataGenerated.count();
     const data = await prisma.dataGenerated.findMany({
@@ -45,6 +46,8 @@ export const listData = async (req: Request, res: Response, next: NextFunction) 
 }
 
 
+
+// get Data By Id
 export const getDataById = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const data = await prisma.dataGenerated.findFirstOrThrow({
@@ -63,7 +66,7 @@ export const getDataById = async (req: Request, res: Response, next: NextFunctio
     }
 }
 
-
+// Delete Data
 export const deleteData = async (req: Request, res: Response, next: NextFunction) => {
 
     try {
@@ -85,17 +88,13 @@ export const deleteData = async (req: Request, res: Response, next: NextFunction
 }
 
 
-
+// Delete List Of Data
 export const deleteMany = async (req: Request, res: Response) => {
 
     const { list } = req.body;
     const validationSchema = listDataSchema.parse(req.body);
     console.log(list);
-
-
     for (let i = 0; i < list.length; i++) {
-
-
         await prisma.dataGenerated.delete({
 
             where: {
