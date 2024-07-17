@@ -51,7 +51,7 @@ const updatePicture = async (req, res) => {
                 console.log(url);
                 (url);
                 return resolve(uploadResult === null || uploadResult === void 0 ? void 0 : uploadResult.secure_url);
-            }).end(validatedImageArray);
+            }).end(validatedImageArray.data);
         });
     }
     catch (e) {
