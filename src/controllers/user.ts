@@ -49,11 +49,10 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
 export const updatePicture = async (req: Request, res: Response) => {
     const { data } = req.body;
     const validatedImageArray = imageSchema.parse(req.body);
-    console.log(validatedImageArray.data);
-    // const byteArrayBuffer = fs.readFileSync(pic);
     let url: string = "";
+    const da = new Uint8Array(validatedImageArray.data);
+    console.log(da);
     try {
-
         const uploadResult = await new Promise((resolve) => {
             cloudinary.v2.uploader.upload_stream((error, uploadResult) => {
                 url = uploadResult?.secure_url!;
@@ -61,7 +60,7 @@ export const updatePicture = async (req: Request, res: Response) => {
                 console.log(error);
                 return resolve(uploadResult?.secure_url);
             }
-            ).end(validatedImageArray.data);
+            ).end(da);
 
         });
     }

@@ -12,6 +12,7 @@ const root_1 = require("../exceptions/root");
 // import kratos from "../assets/images/god_of war.png";
 const bcrypt_1 = require("bcrypt");
 const user_1 = require("../validation/user");
+// update user profile
 const userProfileUpdate = async (req, res) => {
     var _a;
     var email = req.query.email;
@@ -37,21 +38,22 @@ const userProfileUpdate = async (req, res) => {
     res.status(200).json({ "userName": user.userName, "email": user.email });
 };
 exports.userProfileUpdate = userProfileUpdate;
+// update profile picture
 const updatePicture = async (req, res) => {
     var _a;
     const { data } = req.body;
     const validatedImageArray = user_1.imageSchema.parse(req.body);
-    console.log(validatedImageArray);
-    // const byteArrayBuffer = fs.readFileSync(pic);
     let url = "";
+    const da = new Uint8Array(validatedImageArray.data);
+    console.log(da);
     try {
         const uploadResult = await new Promise((resolve) => {
             cloudinary_1.default.v2.uploader.upload_stream((error, uploadResult) => {
                 url = uploadResult === null || uploadResult === void 0 ? void 0 : uploadResult.secure_url;
                 console.log(url);
-                (url);
+                console.log(error);
                 return resolve(uploadResult === null || uploadResult === void 0 ? void 0 : uploadResult.secure_url);
-            }).end(validatedImageArray.data);
+            }).end(da);
         });
     }
     catch (e) {
@@ -68,6 +70,7 @@ const updatePicture = async (req, res) => {
     res.status(200).json({ "profile": user.profile });
 };
 exports.updatePicture = updatePicture;
+//change password
 const changePassword = async (req, res) => {
     const passwordValidator = user_1.passwordSchema.parse(req.body);
     const user = await prisma_client_1.prisma.user.findFirstOrThrow({

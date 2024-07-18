@@ -30,6 +30,7 @@ const unauthorized_1 = require("../exceptions/unauthorized");
 const bad_request_1 = require("../exceptions/bad_request");
 const prisma_client_1 = require("../prisma_client");
 const connectionString = `${process.env.DATABASE_URL}`;
+// auth middleware
 const authMiddleware = async (req, res, next) => {
     // 1. retrieve token from header 
     const token = req.headers.authorization;

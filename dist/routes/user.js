@@ -9,6 +9,9 @@ const error_handler_1 = require("../error_handler");
 const user_1 = require("../controllers/user");
 const auth_1 = __importDefault(require("../middlewares/auth"));
 exports.userRouter = express_1.default.Router();
+//! Profile Update
 exports.userRouter.put("/profile", [auth_1.default], (0, error_handler_1.errorHandler)(user_1.userProfileUpdate));
+//! Picture Update
 exports.userRouter.put("/profile/picture", [auth_1.default], (0, error_handler_1.errorHandler)(user_1.updatePicture));
+//! Change Password
 exports.userRouter.put("/profile/password", [auth_1.default], (0, error_handler_1.errorHandler)(user_1.changePassword));

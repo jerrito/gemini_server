@@ -32,6 +32,7 @@ const jwt = __importStar(require("jsonwebtoken"));
 const secrets_1 = require("../secrets");
 const not_found_1 = require("../exceptions/not_found");
 const prisma_client_1 = require("../prisma_client");
+// Sign Up
 const signup = async (req, res, next) => {
     user_1.userValidation.parse(req.body);
     const { userName, email, password, profile } = req.body;
@@ -57,6 +58,7 @@ const signup = async (req, res, next) => {
     res.status(200).json({ "user": user, "refreshToken": refreshToken });
 };
 exports.signup = signup;
+// Sign in
 const signin = async (req, res, next) => {
     const { email, userName, password, tokenData } = req.body;
     const user = await prisma_client_1.prisma.user.findFirst({
@@ -97,6 +99,7 @@ const me = async (req, res) => {
     return res.status(200).json(req === null || req === void 0 ? void 0 : req.user);
 };
 exports.me = me;
+// Logout
 const logOut = async (req, res) => {
     //: TODO freshly signed up user can't log out
     const token = req.headers.authorization;
@@ -124,6 +127,7 @@ const logOut = async (req, res) => {
     res.status(200).json({ "message": "Logout successful" });
 };
 exports.logOut = logOut;
+// Refresh Token 
 const refreshToken = async (req, res) => {
     const refreshToken = req.headers.authorization;
     const refreshPayload = jwt.verify(refreshToken, secrets_1.refreshTokenKey);

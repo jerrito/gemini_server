@@ -8,9 +8,14 @@ const auth_1 = __importDefault(require("../middlewares/auth"));
 const data_1 = require("../controllers/data");
 const error_handler_1 = require("../error_handler");
 const dataRoute = express_1.default.Router();
+//! Create  Data
 dataRoute.post("/data", [auth_1.default], (0, error_handler_1.errorHandler)(data_1.createData));
+//! List Data
 dataRoute.get("/data", [auth_1.default], (0, error_handler_1.errorHandler)(data_1.listData));
+// Delete Data
 dataRoute.delete("/data/:id", [auth_1.default], (0, error_handler_1.errorHandler)(data_1.deleteData));
+//! DeleteMany 
 dataRoute.delete("/data/delete/list", [auth_1.default], (0, error_handler_1.errorHandler)(data_1.deleteMany));
+//! Get Data By Id
 dataRoute.get("/data/:id", [auth_1.default], (0, error_handler_1.errorHandler)(data_1.getDataById));
 exports.default = dataRoute;

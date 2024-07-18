@@ -16,13 +16,16 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json({
     limit: '50mb'
 }));
+// use root route
 app.use(root_1.default);
 app.use(body_parser_1.default.json({ type: 'application/json', limit: '50mb' }));
+//cloudinary config
 exports.cloudinaryConfig = cloudinary_1.default.v2.config({
     cloud_name: secrets_1.cloudinaryName,
     api_key: secrets_1.cloudinaryApiKey,
     api_secret: secrets_1.cloudinaryApiSecret
 });
+// redis client config
 exports.client = (0, redis_1.createClient)({
     password: secrets_1.redisPassword,
     socket: {
@@ -34,7 +37,9 @@ exports.client = (0, redis_1.createClient)({
 exports.prismaClient = new client_1.PrismaClient({
     log: ["query"],
 });
+// use error middleware
 app.use(error_1.errorMiddleware);
+//port listening
 app.listen(Number(secrets_1.PORT), () => {
     console.log(`Server is started at port ${secrets_1.PORT}`);
 });

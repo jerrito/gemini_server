@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.errorMiddleware = void 0;
+// error middleware
 const errorMiddleware = (error, req, res, nextFunction) => res.status(error.statusCode)
     .json({
     message: error.message,

@@ -8,7 +8,6 @@ const auth_1 = __importDefault(require("./auth"));
 const data_1 = __importDefault(require("./data"));
 const user_1 = require("./user");
 const cloudinary_1 = __importDefault(require("cloudinary"));
-const secrets_1 = require("../secrets");
 const rootRouter = express_1.default.Router();
 // auth route
 rootRouter.use("/api/auth", auth_1.default);
@@ -16,15 +15,10 @@ rootRouter.use("/api/auth", auth_1.default);
 rootRouter.use("/api", data_1.default);
 // user 
 rootRouter.use("/api/user", user_1.userRouter);
-cloudinary_1.default.v2.config({
-    cloud_name: 'du6xt1im8',
-    api_key: secrets_1.cloudinaryApiKey,
-    api_secret: secrets_1.cloudinaryApiSecret
-});
 const data = async () => {
     const mage = '../assets/god_of war.png';
-    cloudinary_1.default.v2.uploader.upload(mage).then(result => {
-        console.log(result);
+    cloudinary_1.default.v2.uploader.upload_large(mage).then(result => {
+        console.log(result.secure_url);
     });
     //   const byteArrayBuffer = fs.readFileSync('../assets/god_of war.png');
     //   const uploadResult = await new Promise((resolve) => {

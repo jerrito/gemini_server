@@ -7,9 +7,11 @@ const validation_error_1 = require("./exceptions/validation_error");
 const internal_server_1 = require("./exceptions/internal_server");
 const bad_request_1 = require("./exceptions/bad_request");
 const jsonwebtoken_1 = require("jsonwebtoken");
+// error handler
 const errorHandler = (method) => {
     return async (req, res, next) => {
         try {
+            // method
             await method(req, res, next);
         }
         catch (error) {
