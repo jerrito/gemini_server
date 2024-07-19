@@ -5,11 +5,8 @@ import { prisma } from "../prisma_client";
 import { BadRequest } from "../exceptions/bad_request";
 import { ErrorCode } from "../exceptions/root";
 import fs from "node:fs"
-
-// import pic from "../assets/images/download.jpeg";
-// import kratos from "../assets/images/god_of war.png";
 import { compareSync, hashSync } from "bcrypt";
-import cloudinaryConfig from "index";
+
 import { imageSchema, passwordSchema } from "../validation/user";
 
 

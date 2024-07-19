@@ -37,7 +37,7 @@ model dataGenerated {
   title     String
   hasImage  Boolean  @default(false)
   dataImage String?
-  dateTime  DateTime @default(now()) @updatedAt
+  dateTime  DateTime? @default(now()) 
   userId    Int
   user      User     @relation(references: [id], fields: [userId])
 
