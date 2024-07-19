@@ -1,18 +1,38 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteMany = exports.deleteData = exports.getDataById = exports.listData = exports.createData = void 0;
 const bad_request_1 = require("../exceptions/bad_request");
 const root_1 = require("../exceptions/root");
 const prisma_client_1 = require("../prisma_client");
 const data_1 = require("../validation/data");
+const cloudinary_1 = __importDefault(require("cloudinary"));
 // create Data 
 const createData = async (req, res, next) => {
     const validatedData = data_1.dataSchema.parse(req.body);
-    console.log(req.user.id);
+    let url = "";
+    if (validatedData.hasImage) {
+        const da = new Uint8Array(validatedData.dataImage);
+        try {
+            const uploadResult = await new Promise((resolve) => {
+                cloudinary_1.default.v2.uploader.upload_stream((error, uploadResult) => {
+                    url = uploadResult === null || uploadResult === void 0 ? void 0 : uploadResult.secure_url;
+                    console.log(url);
+                    console.log(error);
+                    return resolve(uploadResult === null || uploadResult === void 0 ? void 0 : uploadResult.secure_url);
+                }).end(da);
+            });
+        }
+        catch (e) {
+            throw new bad_request_1.BadRequest(e.toString(), root_1.ErrorCode.BAD_REQUEST);
+        }
+    }
     const dataGenerated = await prisma_client_1.prisma.dataGenerated.create({
         data: {
             title: validatedData.title,
-            dataImage: validatedData.dataImage,
+            dataImage: validatedData.hasImage ? url : null,
             hasImage: validatedData.hasImage,
             userId: req.user.id,
             data: validatedData.data

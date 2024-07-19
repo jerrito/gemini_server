@@ -8,8 +8,6 @@ const cloudinary_1 = __importDefault(require("cloudinary"));
 const prisma_client_1 = require("../prisma_client");
 const bad_request_1 = require("../exceptions/bad_request");
 const root_1 = require("../exceptions/root");
-// import pic from "../assets/images/download.jpeg";
-// import kratos from "../assets/images/god_of war.png";
 const bcrypt_1 = require("bcrypt");
 const user_1 = require("../validation/user");
 // update user profile
