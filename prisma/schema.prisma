@@ -26,20 +26,20 @@ model Tokens {
   token   String  @unique
   userId  Int
   isValid Boolean @default(true)
-  user    User    @relation(references: [id], fields: [userId])
+  user    User    @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("blacklisted_tokens")
 }
 
 model dataGenerated {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   data      String
   title     String
-  hasImage  Boolean  @default(false)
+  hasImage  Boolean   @default(false)
   dataImage String?
-  dateTime  DateTime? @default(now()) 
+  dateTime  DateTime? @default(now())
   userId    Int
-  user      User     @relation(references: [id], fields: [userId])
+  user      User      @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("dataGenerated")
 }

@@ -15,15 +15,18 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
     var email: any = req.query.email;
     var userName: any = req.query.userName;
 
-    const checkAlreadyExist = await prisma.user.findFirstOrThrow({
-        where: {
-            email,
+
+    const checkAlreadyExist = await prisma.user.findUnique({
+        where: email ? {
+            // id:req!.user!.id,
+            email
+        } : {
             userName
         }
     });
     if (checkAlreadyExist) {
         throw new BadRequest(
-            email ? "UserName already exist" : "Email already exist",
+            !email ? "UserName already exist" : "Email already exist",
             ErrorCode.BAD_REQUEST
         );
     }
@@ -32,12 +35,15 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
         where: {
             id: req.user?.id
         },
-        data: {
-            email,
-            userName
-        }
+        data:
+            email ? {
+                email,
+            }
+                : {
+                    userName
+                }
     });
-    res.status(200).json({ "userName": user.userName, "email": user.email });
+    res.status(200).json(!email ? { "userName": user.userName } : { "email": user.email });
 
 }
 
@@ -117,4 +123,34 @@ export const changePassword = async (req: Request, res: Response) => {
         }
     });
     res.status(200).json({ "message": "password changed successfully" });
+}
+
+export const deleteAccount = async (req: Request, res: Response) => {
+    const { password } = req.body;
+    const user = await prisma.user.findFirstOrThrow({
+        where: {
+            id: req!.user!.id
+        }
+    })
+    if (!user) {
+        throw new BadRequest(
+            "User not found",
+            ErrorCode.NOT_FOUND
+        )
+    }
+    const checkPassword = compareSync(password, user.password);
+    if (!checkPassword) {
+        throw new
+            BadRequest(
+                "Password error",
+                ErrorCode.Password_Wrong
+            );
+    }
+    const userDelete = await prisma.user.delete({
+        where: {
+            id: user.id
+        }
+    });
+    res.status(200).json({ "message": `${userDelete.userName} account deleted successfully` });
+
 }

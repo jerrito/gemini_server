@@ -1,7 +1,7 @@
 import { Router } from "express";
 import express from 'express';
 import { errorHandler } from "../error_handler";
-import { changePassword, updatePicture, userProfileUpdate } from "../controllers/user";
+import { changePassword, deleteAccount, updatePicture, userProfileUpdate } from "../controllers/user";
 import authMiddleware from "../middlewares/auth";
 
 
@@ -17,4 +17,7 @@ userRouter.put("/profile/picture", [authMiddleware], errorHandler(updatePicture,
 
 //! Change Password
 userRouter.put("/profile/password", [authMiddleware], errorHandler(changePassword,),);
+
+//! Delete Account
+userRouter.delete("", [authMiddleware], errorHandler(deleteAccount,),);
 

@@ -20,7 +20,8 @@ export const redisPassword = process.env.redisPassword;
 // redis host
 export const redisHost = process.env.redisHost;
 
-
+//redis port
+export const redisPort = process.env.redisPort;
 //cloudinary api ey
 export const cloudinaryApiKey = process.env.cloudinaryApiKey;
 

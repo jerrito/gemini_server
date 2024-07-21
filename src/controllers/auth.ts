@@ -116,20 +116,11 @@ export const logOut = async (req: Request, res: Response) => {
   //: TODO freshly signed up user can't log out
   const token = req.headers.authorization;
 
-  //  try{client.connect()
-  //   .then(async (client) => {
-  //     console.log('connected');
-  //     // Write your own code here
-  //     const t=await client.set("token",token!);
-  //     console.log(t);
+//  await client.connect();
+//   const t = await client.set("token", token!);
+//   await client.disconnect();
 
-  //   })}
-  //   catch(err) {
-  //    throw  new BadRequest("Unable to retrieve cache token",
-  //       ErrorCode.UNAUTHORIZED,);
-  //     // console.log('err happened' + err);
-  //   };
-  //   await  client.quit();
+//   console.log(t);
 
 
   await prisma.tokens.update({

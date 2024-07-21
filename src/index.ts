@@ -2,12 +2,14 @@ import express, { Express, Request, Response } from "express"
 
 import { errorHandler } from "./error_handler";
 import { PrismaClient } from "@prisma/client";
-import { PORT, cloudinaryApiKey, cloudinaryApiSecret, cloudinaryName, redisHost, redisPassword } from "./secrets";
+import { PORT, cloudinaryApiKey, cloudinaryApiSecret, cloudinaryName, redisHost, redisPassword, redisPort } from "./secrets";
 import { errorMiddleware } from "./middlewares/error";
 import rootRouter from "./routes/root";
 import redis, { createClient } from 'redis';
 import cloudinary from 'cloudinary';
 import bodyParser from 'body-parser';
+import { BadRequest } from "./exceptions/bad_request";
+import { ErrorCode } from "./exceptions/root";
 
 const app: Express = express();
 
@@ -34,11 +36,10 @@ export const client = createClient({
     password: redisPassword,
     socket: {
         host: redisHost,
-        port: 14611
+        port: Number(redisPort)
     },
     legacyMode: true,
-})
-
+});
 
 
 export const prismaClient = new PrismaClient({

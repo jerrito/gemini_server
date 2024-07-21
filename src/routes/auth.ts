@@ -17,7 +17,7 @@ authRouter.post("/signin", errorHandler(signin));
 authRouter.get("/me", [authMiddleware], errorHandler(me));
 
 //! log out 
-authRouter.post("/logout", errorHandler(logout));
+authRouter.post("/logout",[authMiddleware], errorHandler(logout));
 
 //! refresh token
 authRouter.post("/refresh", errorHandler(refreshToken))
