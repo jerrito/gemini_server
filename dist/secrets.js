@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cloudinaryName = exports.cloudinaryApiSecret = exports.cloudinaryApiKey = exports.redisHost = exports.redisPassword = exports.refreshTokenKey = exports.tokenKey = exports.PORT = void 0;
+exports.cloudinaryName = exports.cloudinaryApiSecret = exports.cloudinaryApiKey = exports.redisPort = exports.redisHost = exports.redisPassword = exports.refreshTokenKey = exports.tokenKey = exports.PORT = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config({ path: ".env" });
 //port
@@ -16,6 +16,8 @@ exports.refreshTokenKey = process.env.refreshTokenKey;
 exports.redisPassword = process.env.redisPassword;
 // redis host
 exports.redisHost = process.env.redisHost;
+//redis port
+exports.redisPort = process.env.redisPort;
 //cloudinary api ey
 exports.cloudinaryApiKey = process.env.cloudinaryApiKey;
 //cloudinary api secret

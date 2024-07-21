@@ -15,3 +15,5 @@ exports.userRouter.put("/profile", [auth_1.default], (0, error_handler_1.errorHa
 exports.userRouter.put("/profile/picture", [auth_1.default], (0, error_handler_1.errorHandler)(user_1.updatePicture));
 //! Change Password
 exports.userRouter.put("/profile/password", [auth_1.default], (0, error_handler_1.errorHandler)(user_1.changePassword));
+//! Delete Account
+exports.userRouter.delete("", [auth_1.default], (0, error_handler_1.errorHandler)(user_1.deleteAccount));

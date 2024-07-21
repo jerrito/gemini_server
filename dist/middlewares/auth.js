@@ -47,27 +47,16 @@ const authMiddleware = async (req, res, next) => {
     if (tokenBlackListed) {
         next(new bad_request_1.BadRequest("Invalid token", root_1.ErrorCode.UNAUTHORIZED));
     }
-    // client
-    // .connect()
-    // .then(async (client) => {
-    //   console.log('connected');
-    //   // Write your own code here
+    // await client.connect();
     //   const tokenBlackListed=await client.get("token");
     //   console.log(tokenBlackListed);
-    //  if(tokenBlackListed !=null){
-    //     next( new BadRequest("Invalid token",
-    //         ErrorCode.UNAUTHORIZED,));
-    //  }
-    // })
-    // .catch((err) => {
-    //   next( new BadRequest("Unable to retrieve cache token",
-    //     ErrorCode.UNAUTHORIZED,));
-    //   console.log('err happened' + err);
-    // });
+    //   await client.disconnect();
+    if (tokenBlackListed != null) {
+        next(new bad_request_1.BadRequest("Invalid token", root_1.ErrorCode.UNAUTHORIZED));
+    }
     try {
         // 3. get the user fro payload
         const payload = jwt.verify(token, secrets_1.tokenKey);
-        console.log(payload);
         // 4. Attach user to current request object
         const user = await prisma_client_1.prisma.user.findFirst({
             where: { id: Number(payload.id) }
@@ -79,7 +68,7 @@ const authMiddleware = async (req, res, next) => {
         next();
     }
     catch (e) {
-        next(new unauthorized_1.UnauthorizedException("Unauthorization", root_1.ErrorCode.UNAUTHORIZED));
+        next(new unauthorized_1.UnauthorizedException("Unauthorized", root_1.ErrorCode.UNAUTHORIZED));
     }
 };
 exports.default = authMiddleware;

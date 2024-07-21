@@ -30,7 +30,7 @@ exports.client = (0, redis_1.createClient)({
     password: secrets_1.redisPassword,
     socket: {
         host: secrets_1.redisHost,
-        port: 14611
+        port: Number(secrets_1.redisPort)
     },
     legacyMode: true,
 });

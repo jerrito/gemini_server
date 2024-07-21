@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changePassword = exports.updatePicture = exports.userProfileUpdate = void 0;
+exports.deleteAccount = exports.changePassword = exports.updatePicture = exports.userProfileUpdate = void 0;
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const prisma_client_1 = require("../prisma_client");
 const bad_request_1 = require("../exceptions/bad_request");
@@ -15,25 +15,29 @@ const userProfileUpdate = async (req, res) => {
     var _a;
     var email = req.query.email;
     var userName = req.query.userName;
-    const checkAlreadyExist = await prisma_client_1.prisma.user.findFirstOrThrow({
-        where: {
-            email,
+    const checkAlreadyExist = await prisma_client_1.prisma.user.findUnique({
+        where: email ? {
+            // id:req!.user!.id,
+            email
+        } : {
             userName
         }
     });
     if (checkAlreadyExist) {
-        throw new bad_request_1.BadRequest(email ? "UserName already exist" : "Email already exist", root_1.ErrorCode.BAD_REQUEST);
+        throw new bad_request_1.BadRequest(!email ? "UserName already exist" : "Email already exist", root_1.ErrorCode.BAD_REQUEST);
     }
     const user = await prisma_client_1.prisma.user.update({
         where: {
             id: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id
         },
-        data: {
+        data: email ? {
             email,
-            userName
         }
+            : {
+                userName
+            }
     });
-    res.status(200).json({ "userName": user.userName, "email": user.email });
+    res.status(200).json(!email ? { "userName": user.userName } : { "email": user.email });
 };
 exports.userProfileUpdate = userProfileUpdate;
 // update profile picture
@@ -95,3 +99,25 @@ const changePassword = async (req, res) => {
     res.status(200).json({ "message": "password changed successfully" });
 };
 exports.changePassword = changePassword;
+const deleteAccount = async (req, res) => {
+    const { password } = req.body;
+    const user = await prisma_client_1.prisma.user.findFirstOrThrow({
+        where: {
+            id: req.user.id
+        }
+    });
+    if (!user) {
+        throw new bad_request_1.BadRequest("User not found", root_1.ErrorCode.NOT_FOUND);
+    }
+    const checkPassword = (0, bcrypt_1.compareSync)(password, user.password);
+    if (!checkPassword) {
+        throw new bad_request_1.BadRequest("Password error", root_1.ErrorCode.Password_Wrong);
+    }
+    const userDelete = await prisma_client_1.prisma.user.delete({
+        where: {
+            id: user.id
+        }
+    });
+    res.status(200).json({ "message": `${userDelete.userName} account deleted successfully` });
+};
+exports.deleteAccount = deleteAccount;
