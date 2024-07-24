@@ -43,7 +43,7 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
                     userName
                 }
     });
-    res.status(200).json(!email ? { "userName": user.userName } : { "email": user.email });
+    res.status(200).json({user});
 
 }
 

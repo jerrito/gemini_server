@@ -55,7 +55,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
 // Sign in
 export const signin = async (req: Request, res: Response, next: NextFunction) => {
 
-  const { email, userName, password, tokenData } = req.body;
+  const { email, userName, password} = req.body;
 
   const user = await prisma.user.findFirst({
     where: {
