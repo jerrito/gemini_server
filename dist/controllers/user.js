@@ -37,7 +37,7 @@ const userProfileUpdate = async (req, res) => {
                 userName
             }
     });
-    res.status(200).json(!email ? { "userName": user.userName } : { "email": user.email });
+    res.status(200).json({ user });
 };
 exports.userProfileUpdate = userProfileUpdate;
 // update profile picture
