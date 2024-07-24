@@ -10,14 +10,16 @@ import { NotFoundException } from "../exceptions/not_found";
 import { prisma } from "../prisma_client";
 import redis from "redis";
 import { client } from "..";
+import { Role } from "@prisma/client";
 
 
 // Sign Up
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
 
-  userValidation.parse(req.body);
+  //userValidation.parse(req.body);
+  let admin;
 
-  const { userName, email, password, profile } = req.body;
+  const { userName, email, password, profile, role, subject } = req.body;
 
   let user = await prisma.user.findFirst({
     where: {
@@ -34,11 +36,18 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
   user = await prisma.user.create({
     data: {
       userName,
-      email: email,
+      email,
+      role,
       password: hashSync(password, 10),
-
-    }
+    },
   });
+  role == "Admin" ?
+    admin = await prisma.admin.create({
+      data: {
+        subject,
+        userId: user.id
+      }
+    }) : null;
 
   const refreshToken = jwt.sign({
     id: user.id,
@@ -47,7 +56,10 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     { expiresIn: '30 days' }
   );
 
-  res.status(200).json({ "user": user, "refreshToken": refreshToken });
+  res.status(200).json({
+    "user": user, "refreshToken": refreshToken,
+    "admin": role == "Admin" ? admin : null
+  });
 
 }
 
@@ -55,7 +67,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
 // Sign in
 export const signin = async (req: Request, res: Response, next: NextFunction) => {
 
-  const { email, userName, password} = req.body;
+  const { email, userName, password } = req.body;
 
   const user = await prisma.user.findFirst({
     where: {
@@ -116,11 +128,11 @@ export const logOut = async (req: Request, res: Response) => {
   //: TODO freshly signed up user can't log out
   const token = req.headers.authorization;
 
-//  await client.connect();
-//   const t = await client.set("token", token!);
-//   await client.disconnect();
+  //  await client.connect();
+  //   const t = await client.set("token", token!);
+  //   await client.disconnect();
 
-//   console.log(t);
+  //   console.log(t);
 
 
   await prisma.tokens.update({

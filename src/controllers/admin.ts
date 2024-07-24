@@ -5,12 +5,12 @@ import { prisma } from "prisma_client";
 export const AdminSignup = async (req: Request, res: Response) => {
 
 
-    const { userName, email, password,subject } = req.body;
+    const { userName, email, password,subject ,role} = req.body;
 
-    const Admin = await prisma.admin.create({
+    const Admin = await prisma.user.create({
         data: {
             userName, email, password,
-            subject
+            
         },
 
     });

@@ -16,37 +16,19 @@ enum Subject {
   Computing
 }
 
-model Admin {
-  id       Int    @id @default(autoincrement())
-  userName String @unique
-  email    String @unique
-  password String
-  profile  String @default("")
-  user     User[]
-  isApproved Boolean @default(false)
-
-  dataGenerated     dataGenerated[]
-  blackListedTokens Tokens[]
-
-  studentCount Int? @default(0)
-  subject      Subject @default(English)
-  learning     Learning[]
-  assessment   Assessment[]
-
-  @@map("admin")
+enum Role {
+  User
+  Admin
 }
 
-model Assessment {
-  id      Int    @id @default(autoincrement())
-  userId  Int
-  subject String
-  score   Int
-  adminId Int
-  admin   Admin  @relation(references: [id], fields: [adminId], onDelete: Cascade)
-
-  @@map("assessment")
-   user User   @relation(references: [id], fields: [userId], onDelete: Cascade)
- 
+model Admin {
+  id           Int     @id @default(autoincrement())
+  isApproved   Boolean? @default(false)
+  studentCount Int?    @default(0)
+  subject      Subject @default(English)
+  userId       Int     @unique
+  user         User    @relation(references: [id], fields: [userId], onDelete: Cascade)
+ @@map("admin")
 }
 
 model User {
@@ -54,40 +36,46 @@ model User {
   userName          String          @unique
   email             String          @unique
   password          String
-  isStudent         Boolean         @default(false)
-  profile           String          @default("")
+  isStudent         Boolean?         @default(false)
+  profile           String?          @default("")
+  role              Role?            @default(User)
   dataGenerated     dataGenerated[]
   blackListedTokens Tokens[]
-  learning        Learning[]
-  assessment      Assessment[]
-  admin            Admin[]
-
+  learning          Learning[]
+  assessment        Assessment[]
+  admin    Admin?
   @@map("user")
 }
 
+model Assessment {
+  id      Int    @id @default(autoincrement())
+  userId  Int
+  subject String
+  score   Int
+  user    User   @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@map("assessment")
+}
+
 model Learning {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   title     String
   data      String[]
   url       String
-  extension String @default(".txt")
-  pages     Int    @default(0)
-  adminId   Int
-  userId   Int
-  admin     Admin  @relation(references: [id], fields: [adminId], onDelete: Cascade)
-  user     User  @relation(references: [id], fields: [userId], onDelete: Cascade)
+  extension String   @default(".txt")
+  pages     Int?     @default(0)
+  userId    Int
+  user      User?    @relation(references: [id], fields: [userId], onDelete: SetDefault)
 
-  @@map("LearningTable")
+  @@map("learning")
 }
 
 model Tokens {
   id      Int     @id @default(autoincrement())
   token   String  @unique
   userId  Int
-  adminId Int @default(0)
   isValid Boolean @default(true)
   user    User    @relation(references: [id], fields: [userId], onDelete: Cascade)
-  admin   Admin   @relation(references: [id], fields: [adminId], onDelete: Cascade)
 
   @@map("blacklisted_tokens")
 }
@@ -100,9 +88,7 @@ model dataGenerated {
   dataImage String?
   dateTime  DateTime? @default(now())
   userId    Int
-  adminId   Int @default(0)
   user      User      @relation(references: [id], fields: [userId], onDelete: Cascade)
-  admin     Admin     @relation(references: [id], fields: [adminId], onDelete: Cascade)
 
   @@map("dataGenerated")
 }
