@@ -17,9 +17,9 @@ import { Role } from "@prisma/client";
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
 
   //userValidation.parse(req.body);
-  let admin;
+  
 
-  const { userName, email, password, profile, role, subject } = req.body;
+  const { userName, email, password,  role } = req.body;
 
   let user = await prisma.user.findFirst({
     where: {
@@ -41,13 +41,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
       password: hashSync(password, 10),
     },
   });
-  role == "Admin" ?
-    admin = await prisma.admin.create({
-      data: {
-        subject,
-        userId: user.id
-      }
-    }) : null;
+  
 
   const refreshToken = jwt.sign({
     id: user.id,
@@ -55,11 +49,11 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     refreshTokenKey,
     { expiresIn: '30 days' }
   );
-
+ 
   res.status(200).json({
     "user": user, "refreshToken": refreshToken,
-    "admin": role == "Admin" ? admin : null
-  });
+     
+  })
 
 }
 

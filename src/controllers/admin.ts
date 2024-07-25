@@ -1,21 +1,32 @@
+import { Role } from "@prisma/client";
 import { Request, Response } from "express";
-import { prisma } from "prisma_client";
+import { prisma } from "../prisma_client";
 
 
 export const AdminSignup = async (req: Request, res: Response) => {
 
 
-    const { userName, email, password,subject ,role} = req.body;
+    const { subject, role } = req.body;
 
-    const Admin = await prisma.user.create({
+    const Admin = await prisma.admin.create({
         data: {
-            userName, email, password,
-            
+            userId:req?.user!.id,
+            subject,
+            isApproved:true
+
         },
 
     });
+    const updateRole=await prisma.user.update({
+        where:{
+            id:req?.user!.id
+        },
+        data:{
+            role:Role.Admin
+        }
+    })
 
-    res.status(200).json({Admin})
+    res.status(200).json({ Admin,updateRole })
 
 
 };

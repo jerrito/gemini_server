@@ -22,13 +22,14 @@ enum Role {
 }
 
 model Admin {
-  id           Int     @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   isApproved   Boolean? @default(false)
-  studentCount Int?    @default(0)
-  subject      Subject @default(English)
-  userId       Int     @unique
-  user         User    @relation(references: [id], fields: [userId], onDelete: Cascade)
- @@map("admin")
+  studentCount Int?     @default(0)
+  subject      Subject  @default(English)
+  userId       Int      @unique
+  user         User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  learning          Learning[]
+  @@map("admin")
 }
 
 model User {
@@ -36,14 +37,14 @@ model User {
   userName          String          @unique
   email             String          @unique
   password          String
-  isStudent         Boolean?         @default(false)
-  profile           String?          @default("")
-  role              Role?            @default(User)
+  isStudent         Boolean?        @default(false)
+  profile           String?         @default("")
+  role              Role?           @default(User)
   dataGenerated     dataGenerated[]
   blackListedTokens Tokens[]
-  learning          Learning[]
   assessment        Assessment[]
-  admin    Admin?
+  admin             Admin?
+
   @@map("user")
 }
 
@@ -58,16 +59,24 @@ model Assessment {
 }
 
 model Learning {
-  id        Int      @id @default(autoincrement())
-  title     String
-  data      String[]
-  url       String
-  extension String   @default(".txt")
-  pages     Int?     @default(0)
-  userId    Int
-  user      User?    @relation(references: [id], fields: [userId], onDelete: SetDefault)
+  id Int @id @default(autoincrement())
+  adminId             Int
+  admin               Admin?              @relation(references: [id], fields: [adminId], onDelete: SetDefault)
+  LearningResoources LearningResource[]
 
   @@map("learning")
+}
+
+model LearningResource {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  url       String?
+  pages     Int?     @default(0)
+  title      String
+  extension  String          @default(".txt")
+  data       Unsupported("")
+  learningId Int
+  learning   Learning        @relation(references: [id], fields: [learningId])
 }
 
 model Tokens {
