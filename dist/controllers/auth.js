@@ -34,8 +34,7 @@ const prisma_client_1 = require("../prisma_client");
 // Sign Up
 const signup = async (req, res, next) => {
     //userValidation.parse(req.body);
-    let admin;
-    const { userName, email, password, profile, role, subject } = req.body;
+    const { userName, email, password, role } = req.body;
     let user = await prisma_client_1.prisma.user.findFirst({
         where: {
             email: email,
@@ -53,19 +52,11 @@ const signup = async (req, res, next) => {
             password: (0, bcrypt_1.hashSync)(password, 10),
         },
     });
-    role == "Admin" ?
-        admin = await prisma_client_1.prisma.admin.create({
-            data: {
-                subject,
-                userId: user.id
-            }
-        }) : null;
     const refreshToken = jwt.sign({
         id: user.id,
     }, secrets_1.refreshTokenKey, { expiresIn: '30 days' });
     res.status(200).json({
         "user": user, "refreshToken": refreshToken,
-        "admin": role == "Admin" ? admin : null
     });
 };
 exports.signup = signup;

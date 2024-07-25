@@ -1,13 +1,8 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.learningRoute = void 0;
-const express_1 = __importDefault(require("express"));
-const auth_1 = __importDefault(require("../middlewares/auth"));
-const error_handler_1 = require("../error_handler");
-const learning_1 = require("../controllers/learning");
-const admin_1 = require("middlewares/admin");
-exports.learningRoute = express_1.default.Router();
-exports.learningRoute.post("", [auth_1.default, admin_1.adminMiddleware], (0, error_handler_1.errorHandler)(learning_1.addLearning));
+// import express, { Router } from "express";
+// import authMiddleware from "../middlewares/auth";
+// import { errorHandler } from "../error_handler";
+// import { addLearning } from "../controllers/learning";
+// import { adminMiddleware } from "../middlewares/admin";
+// export const learningRoute: Router = express.Router();
+// learningRoute.post("", [authMiddleware, adminMiddleware], errorHandler(addLearning))

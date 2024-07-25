@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const auth_1 = __importDefault(require("./auth"));
 const data_1 = __importDefault(require("./data"));
 const user_1 = require("./user");
-const cloudinary_1 = __importDefault(require("cloudinary"));
+const admin_1 = __importDefault(require("./admin"));
 const rootRouter = express_1.default.Router();
 // auth route
 rootRouter.use("/api/auth", auth_1.default);
@@ -15,20 +15,6 @@ rootRouter.use("/api/auth", auth_1.default);
 rootRouter.use("/api", data_1.default);
 // user 
 rootRouter.use("/api/user", user_1.userRouter);
-const data = async () => {
-    const mage = '../assets/god_of war.png';
-    cloudinary_1.default.v2.uploader.upload_large(mage).then(result => {
-        console.log(result.secure_url);
-    });
-    //   const byteArrayBuffer = fs.readFileSync('../assets/god_of war.png');
-    //   const uploadResult = await new Promise((resolve) => {
-    //       cloudinary.v2.uploader.upload_stream((error, uploadResult) => {
-    //           return resolve(uploadResult);
-    //       }).end(byteArrayBuffer);
-    //       console.log(uploadResult);
-    //   });
-    console.log(data);
-    //   console.log(uploadResult); 
-};
-rootRouter.post("/ss", data);
+// admin
+rootRouter.use("/api/admin", admin_1.default);
 exports.default = rootRouter;
