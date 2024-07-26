@@ -6,6 +6,8 @@ import { InternalException } from "./exceptions/internal_server";
 import { BadRequest } from "./exceptions/bad_request";
 import { tokenKey } from "./secrets";
 import { Jwt, TokenExpiredError } from "jsonwebtoken";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { PrismaClientError } from "./exceptions/prisma_client";
 
 // error handler
 export const errorHandler = (method: Function) => {
@@ -26,7 +28,13 @@ export const errorHandler = (method: Function) => {
                     exception = error;
                     next(exception);
                 }
-
+                if(error instanceof PrismaClientKnownRequestError){
+                    next (new PrismaClientError(
+                        "Prisma Client Error",
+                        error.message,
+                        ErrorCode.BAD_REQUEST
+                    ))
+                }
                 if (error instanceof ZodError) {
                     next(new ValidationError(
                         "Validation error",
