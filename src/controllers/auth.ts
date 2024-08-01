@@ -9,14 +9,16 @@ import { refreshTokenKey, tokenKey } from "../secrets";
 import { NotFoundException } from "../exceptions/not_found";
 import { prisma } from "../prisma_client";
 import redis from "redis";
-import { client } from "..";
+import { client, firebaseAdmin } from "../index";
 import { Role } from "@prisma/client";
+import ff from "firebase-admin/lib/credential";
+
 
 
 // Sign Up
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
 
-  //userValidation.parse(req.body);
+  const userSchema=userValidation.parse(req.body);
   
 
   const { userName, email, password,  role } = req.body;

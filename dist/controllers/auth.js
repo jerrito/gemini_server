@@ -26,6 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.refreshToken = exports.logOut = exports.me = exports.signin = exports.signup = void 0;
 const bad_request_1 = require("../exceptions/bad_request");
 const root_1 = require("../exceptions/root");
+const user_1 = require("../validation/user");
 const bcrypt_1 = require("bcrypt");
 const jwt = __importStar(require("jsonwebtoken"));
 const secrets_1 = require("../secrets");
@@ -33,7 +34,7 @@ const not_found_1 = require("../exceptions/not_found");
 const prisma_client_1 = require("../prisma_client");
 // Sign Up
 const signup = async (req, res, next) => {
-    //userValidation.parse(req.body);
+    const userSchema = user_1.userValidation.parse(req.body);
     const { userName, email, password, role } = req.body;
     let user = await prisma_client_1.prisma.user.findFirst({
         where: {

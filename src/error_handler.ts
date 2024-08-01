@@ -5,7 +5,10 @@ import { ValidationError } from "./exceptions/validation_error";
 import { InternalException } from "./exceptions/internal_server";
 import { BadRequest } from "./exceptions/bad_request";
 import { tokenKey } from "./secrets";
-import { Jwt, TokenExpiredError } from "jsonwebtoken";
+import { Jwt, TokenExpiredError } from "jsonwebtoken";          
+import { FirebaseException } from "exceptions/firebase";
+import firebaseAdmin from "firebase-admin";
+// import { FirebaseAuthError, FirebaseError } ;
 
 // error handler
 export const errorHandler = (method: Function) => {
@@ -26,7 +29,12 @@ export const errorHandler = (method: Function) => {
                     exception = error;
                     next(exception);
                 }
-
+            // if (error instanceof firebaseAdmin.app. FirebaseAuthError){
+            //     next (new FirebaseException(
+            //         "Firebase Error",
+            //         error.message,
+            //     ));
+            // }    
                 if (error instanceof ZodError) {
                     next(new ValidationError(
                         "Validation error",

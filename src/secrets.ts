@@ -2,15 +2,16 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: ".env" });
 
-
+// firebase key
+export const firebaseKey=process.env.firebaseKey;
 //port
 export const PORT = process.env.Port;
 
-// refresh toen
+// refresh token
 export const tokenKey = process.env.tokenKey!;
 
 
-//refresh toen
+//refresh token
 export const refreshTokenKey = process.env.refreshTokenKey!;
 
 

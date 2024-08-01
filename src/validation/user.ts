@@ -6,7 +6,8 @@ export const userValidation = z.object({
         "Username must be more than 2 or more characters long"),
     email: string().email(),
     password: string().min(6,
-        "Password must be 6 or more characters long")
+        "Password must be 6 or more characters long"),
+        phoneNumber:string()
 })
 
 
