@@ -5,6 +5,7 @@ import { BadRequest } from "../../exceptions/bad_request";
 import { ErrorCode } from "../../exceptions/root";
 import { UserRecord } from "firebase-admin/lib/auth/user-record";
 import { UserFirebase } from "../../types/index";
+import { compareSync } from "bcrypt";
 
 
 export const firebaseSignup=async(req:Request,res:Response)=>{
@@ -27,22 +28,25 @@ res.status(200).json({user});
 }
 
 export const firebaseSignin=async(req:Request,res:Response)=>{
-    const phoneNumber=req.query.phoneNumber;
-    const email=req.query.email;
+    const {email,phoneNumber,password}=req.body;
     console.log(phoneNumber)
 
     let user:UserRecord;
    if( phoneNumber !=null){
    user= await firebaseAdmin.auth().getUserByPhoneNumber(
         phoneNumber?.toString()
-    )
-    res.status(200).json({user});
-
-} 
-else{
-  user= await firebaseAdmin.auth().getUserByEmail(
-        email?.toString()!
     );
+    res.status(200).json({user});
+    
+  } 
+  else{
+    user= await firebaseAdmin.auth().getUserByEmail(
+      email?.toString()!
+    );
+  if(! compareSync(password,user?.passwordHash ?? ""))
+    {
+      throw new BadRequest("Password doesn't match",ErrorCode.Password_Wrong);
+    }
     res.status(200).json({user});
 }
 
