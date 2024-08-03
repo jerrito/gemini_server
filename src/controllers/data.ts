@@ -4,6 +4,7 @@ import { ErrorCode } from "../exceptions/root";
 import { prisma } from "../prisma_client";
 import { dataSchema, listDataSchema } from "../validation/data";
 import cloudinary from 'cloudinary';
+import { firebaseAdmin } from ".././index";
 
 // create Data 
 export const createData = async (req: Request, res: Response, next: NextFunction) => {
@@ -41,6 +42,7 @@ export const createData = async (req: Request, res: Response, next: NextFunction
             data: validatedData.data
         }
     });
+    // await firebaseAdmin().
     
     
 

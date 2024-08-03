@@ -2,12 +2,17 @@ import express, { Router } from "express";
 import authMiddleware from "../middlewares/auth";
 import { createData, deleteData, deleteMany, getDataById, listData } from "../controllers/data";
 import { errorHandler } from "../error_handler";
+import firebaseAuthMiddleware from "../middlewares/firebase_auth";
+import { createFireStoreData } from "../controllers/firebase/data";
 
 
 const dataRoute: Router = express.Router();
 
 //! Create  Data
 dataRoute.post("/data", [authMiddleware], errorHandler(createData));
+
+//! Create Data Firebase
+dataRoute.post("firebase/data", [firebaseAuthMiddleware as any], errorHandler(createFireStoreData));
 
 //! List Data
 dataRoute.get("/data", [authMiddleware], errorHandler(listData));

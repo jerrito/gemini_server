@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { firebaseAdmin } from ".././index";
-import { BadRequest } from "exceptions/bad_request";
-import { ErrorCode } from "exceptions/root";
-import { UnauthorizedException } from "exceptions/unauthorized";
-import { UserFirebase } from "index";
+import { BadRequest } from "../exceptions/bad_request";
+import { ErrorCode } from "../exceptions/root";
+import { UnauthorizedException } from "../exceptions/unauthorized";
+import { UserFirebase } from ".././types/index";
 
  const firebaseAuthMiddleware=async(req:UserFirebase,res:Response,next:NextFunction)=>{
 
