@@ -6,7 +6,6 @@ import { BadRequest } from "../../exceptions/bad_request";
 import { ErrorCode } from "../../exceptions/root";
 import { prisma } from "../../prisma_client";
 import cloudinary from 'cloudinary';
-const uid="NrdJLtUCGed21strFNSgL0sJcj82";
 
 export const createFireStoreData=async(req:UserFirebase,res:Response, next:NextFunction)=>{
     
@@ -36,7 +35,7 @@ export const createFireStoreData=async(req:UserFirebase,res:Response, next:NextF
 }
     const data=await firebaseAdmin.firestore()
     .collection("data")
-    .doc( uid)
+    .doc( req.firebaseUser?.uid)
     .collection("my_data")
     .add(
         {
@@ -59,13 +58,13 @@ export const getFirestoreDataById=async(req:UserFirebase,res:Response)=>{
     try{
     const data=await firebaseAdmin.firestore()
     .collection("data")
-    .doc( uid)
+    .doc( req.firebaseUser?.uid)
     .collection("my_data")
     .doc(id!
     ).get();
     res.status(200).json(data.data());
 }catch(e:any){
-    throw new BadRequest(e.toString(),
+    throw new BadRequest("Document id cannot be found",
         ErrorCode.NOT_FOUND
     );
 }
@@ -76,7 +75,7 @@ export const listFirestoreData=async(req:UserFirebase,res:Response)=>{
      let l=["e",1];
     const data=await firebaseAdmin.firestore()
     .collection("data")
-    .doc( uid)
+    .doc( req.firebaseUser?.uid)
     .collection("my_data")
     .get();
      data.forEach(async(e)=> {
@@ -95,7 +94,7 @@ export const deleteFirestoreData=async(req:UserFirebase,res:Response)=>{
     try{
     const data=await firebaseAdmin.firestore()
     .collection("data")
-    .doc( uid)
+    .doc( req.firebaseUser?.uid)
     .collection("my_data")
     .doc(id!)
     .delete({
@@ -117,7 +116,7 @@ export const deleteListFirestoreData=async(req:UserFirebase,res:Response)=>{
     const {list}=req.body;
     const batchDelete=await firebaseAdmin.firestore().batch();
     const data=await firebaseAdmin.firestore().collection("data")
-    .doc(uid)
+    .doc(req.firebaseUser?.uid)
     .collection("my_data");
     for (let i = 0; i < list.length; i++) {
        batchDelete.delete(data.doc(list[i]));
