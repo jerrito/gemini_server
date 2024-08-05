@@ -28,5 +28,5 @@ authRouter.post("/firebase/signin", (0, error_handler_1.errorHandler)(auth_3.fir
 //! get firebase user
 authRouter.get("/firebase/me", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(auth_3.getFirebaseUser));
 //! log out
-authRouter.post("firebase/logout", (0, error_handler_1.errorHandler)(auth_3.logOut));
+authRouter.post("firebase/logout", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(auth_3.logOut));
 exports.default = authRouter;

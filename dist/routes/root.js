@@ -8,6 +8,7 @@ const auth_1 = __importDefault(require("./auth"));
 const data_1 = __importDefault(require("./data"));
 const user_1 = require("./user");
 const admin_1 = __importDefault(require("./admin"));
+const learning_1 = __importDefault(require("./learning"));
 const rootRouter = express_1.default.Router();
 // auth route
 rootRouter.use("/api/auth", auth_1.default);
@@ -17,4 +18,6 @@ rootRouter.use("/api", data_1.default);
 rootRouter.use("/api/user", user_1.userRouter);
 // admin
 rootRouter.use("/api/admin", admin_1.default);
+// learning
+rootRouter.use("/learning", learning_1.default);
 exports.default = rootRouter;

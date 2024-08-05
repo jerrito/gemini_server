@@ -27,19 +27,19 @@ dataRoute.get("/data/:id", [authMiddleware], errorHandler(getDataById));
 //! FIRESTORE TRANSACTIONS
 
 //! Create Data Firebase
-dataRoute.post("/firestore/data",errorHandler(createFireStoreData));
+dataRoute.post("/firestore/data",[firebaseAuthMiddleware as any],errorHandler(createFireStoreData));
 
 //! get document by id 
-dataRoute.get("/firestore/data",errorHandler(getFirestoreDataById));
+dataRoute.get("/firestore/data",[firebaseAuthMiddleware as any],errorHandler(getFirestoreDataById));
 
 
 //! list firestore data
-dataRoute.get("/firestore/datas",errorHandler(listFirestoreData));
+dataRoute.get("/firestore/datas",[firebaseAuthMiddleware as any],errorHandler(listFirestoreData));
 
 //! delete firestore data
-dataRoute.delete("/firestore/data",errorHandler(deleteFirestoreData),);
+dataRoute.delete("/firestore/data",[firebaseAuthMiddleware as any],errorHandler(deleteFirestoreData),);
 
 //! delete firestore list data
-dataRoute.delete("/firestore/data/list",errorHandler(deleteListFirestoreData),);
+dataRoute.delete("/firestore/data/list",[firebaseAuthMiddleware as any],errorHandler(deleteListFirestoreData),);
 
 export default dataRoute;
