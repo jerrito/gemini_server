@@ -3,6 +3,7 @@ import { signin, signup, me, logOut as logout, refreshToken } from "../controlle
 import { errorHandler } from "../error_handler";
 import authMiddleware from "../middlewares/auth";
 import { firebaseSignin, firebaseSignup, getFirebaseUser, logOut } from "../controllers/firebase/auth";
+import firebaseAuthMiddleware from "../middlewares/firebase_auth";
 
 const authRouter = express.Router();
 
@@ -34,7 +35,7 @@ authRouter.post("/firebase/signin",errorHandler(firebaseSignin))
 
 
 //! get firebase user
-authRouter.get("/firebase/me",errorHandler(getFirebaseUser))
+authRouter.get("/firebase/me",[firebaseAuthMiddleware as any],errorHandler(getFirebaseUser))
 
 //! log out
 authRouter.post("firebase/logout",errorHandler(logOut))

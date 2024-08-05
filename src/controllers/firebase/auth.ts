@@ -36,7 +36,7 @@ export const firebaseSignin=async(req:Request,res:Response)=>{
    user= await firebaseAdmin.auth().getUserByPhoneNumber(
         phoneNumber?.toString()
     );
-    res.status(200).json({user});
+    res.status(200).json(user);
     
   } 
   else{
@@ -44,7 +44,8 @@ export const firebaseSignin=async(req:Request,res:Response)=>{
     user= await firebaseAdmin.auth().getUserByEmail(
       email?.toString()!
     );
-  if(! compareSync(password,user?.passwordHash ?? ""))
+    console.log(user?.passwordSalt)
+  if(password != user?.passwordSalt ?? "")
     {
       throw new BadRequest("Password doesn't match",ErrorCode.Password_Wrong);
     }
@@ -56,7 +57,7 @@ export const firebaseSignin=async(req:Request,res:Response)=>{
 export const getFirebaseUser=async (req:UserFirebase,res:Response)=>{
    
     
-  return  res.status(200).json(req?.firebaseUser)
+  return  res.status(200).json(req?.firebaseUser ?? "User")
 }
 
 export const refreshToken=async(req:Request,res:Response)=>{

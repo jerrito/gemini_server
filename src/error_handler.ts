@@ -8,6 +8,8 @@ import { tokenKey } from "./secrets";
 import { Jwt, TokenExpiredError } from "jsonwebtoken";          
 import { FirebaseException } from "exceptions/firebase";
 import firebaseAdmin from "firebase-admin";
+// import { FirebaseAuthError } from "firebase-admin/lib/utils/error";
+import { NotFoundException } from "exceptions/not_found";
 // import { FirebaseAuthError, FirebaseError } ;
 
 // error handler
@@ -40,6 +42,11 @@ export const errorHandler = (method: Function) => {
                         "Validation error",
                         error.message,),);
                 }
+                // if(error instanceof FirebaseAuthError){
+                //     next(new ValidationError(
+                //         "Validation error",
+                //         error.message,),);
+                // }
                 if (error instanceof TokenExpiredError) {
                     next(
                         new ValidationError(
