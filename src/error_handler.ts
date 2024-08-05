@@ -4,13 +4,14 @@ import { ErrorCode, HTTPExceptions } from "./exceptions/root";
 import { ValidationError } from "./exceptions/validation_error";
 import { InternalException } from "./exceptions/internal_server";
 import { BadRequest } from "./exceptions/bad_request";
-import { tokenKey } from "./secrets";
-import { Jwt, TokenExpiredError } from "jsonwebtoken";          
+import { tokenKey } from "./secrets";      
 import { FirebaseException } from "exceptions/firebase";
 import firebaseAdmin from "firebase-admin";
-// import { FirebaseAuthError } from "firebase-admin/lib/utils/error";
 import { NotFoundException } from "exceptions/not_found";
-// import { FirebaseAuthError, FirebaseError } ;
+import { Jwt, TokenExpiredError } from "jsonwebtoken";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { PrismaClientError } from "./exceptions/prisma_client";
+
 
 // error handler
 export const errorHandler = (method: Function) => {
@@ -30,23 +31,19 @@ export const errorHandler = (method: Function) => {
                 if (error instanceof BadRequest) {
                     exception = error;
                     next(exception);
+                }  
+                if(error instanceof PrismaClientKnownRequestError){
+                    next (new PrismaClientError(
+                        "Prisma Client Error",
+                        error.message,
+                        ErrorCode.BAD_REQUEST
+                    ))
                 }
-            // if (error instanceof firebaseAdmin.app. FirebaseAuthError){
-            //     next (new FirebaseException(
-            //         "Firebase Error",
-            //         error.message,
-            //     ));
-            // }    
                 if (error instanceof ZodError) {
                     next(new ValidationError(
                         "Validation error",
                         error.message,),);
                 }
-                // if(error instanceof FirebaseAuthError){
-                //     next(new ValidationError(
-                //         "Validation error",
-                //         error.message,),);
-                // }
                 if (error instanceof TokenExpiredError) {
                     next(
                         new ValidationError(

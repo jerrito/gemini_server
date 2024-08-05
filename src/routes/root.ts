@@ -6,6 +6,7 @@ import cloudinary from 'cloudinary';
 import { cloudinaryApiKey, cloudinaryApiSecret } from "../secrets";
 import fs from 'node:fs';
 import adminRouter from "./admin";
+import learningRouter  from "./learning";
 
 const rootRouter: Router = express.Router();
 
@@ -21,4 +22,7 @@ rootRouter.use("/api/user", userRouter)
 
 // admin
 rootRouter.use("/api/admin", adminRouter)
+
+// learning
+rootRouter.use("/learning", learningRouter);
 export default rootRouter;

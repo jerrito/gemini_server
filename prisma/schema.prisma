@@ -21,14 +21,25 @@ enum Role {
   Admin
 }
 
+model LearningLink {
+  id     Int    @id @default(autoincrement())
+  link   String @unique
+  hasExpired Boolean? @default(false)
+  createdAt DateTime? @default(now())
+  userId Int
+  user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
+ @@map("learning_link")
+}
+
 model Admin {
-  id           Int      @id @default(autoincrement())
-  isApproved   Boolean? @default(false)
-  studentCount Int?     @default(0)
-  subject      Subject  @default(English)
-  userId       Int      @unique
-  user         User     @relation(references: [id], fields: [userId], onDelete: Cascade)
-  learning          Learning[]
+  id           Int        @id @default(autoincrement())
+  isApproved   Boolean?   @default(false)
+  studentCount Int?       @default(0)
+  subject      Subject    @default(English)
+  userId       Int        @unique
+  user         User       @relation(references: [id], fields: [userId], onDelete: Cascade)
+  learning     Learning[]
+
   @@map("admin")
 }
 
@@ -44,6 +55,7 @@ model User {
   blackListedTokens Tokens[]
   assessment        Assessment[]
   admin             Admin?
+  learningLink      LearningLink[]
 
   @@map("user")
 }
@@ -59,24 +71,25 @@ model Assessment {
 }
 
 model Learning {
-  id Int @id @default(autoincrement())
-  adminId             Int
-  admin               Admin?              @relation(references: [id], fields: [adminId], onDelete: SetDefault)
-  LearningResoources LearningResource[]
+  id                 Int                @id @default(autoincrement())
+  adminId            Int
+  admin              Admin?             @relation(references: [id], fields: [adminId], onDelete: SetDefault)
+  learningResources LearningResource[]
 
   @@map("learning")
 }
 
 model LearningResource {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  url       String?
-  pages     Int?     @default(0)
+  id         Int             @id @default(autoincrement())
+  createdAt  DateTime?        @default(now())
+  url        String?
+  pages      Int?            @default(0)
   title      String
-  extension  String          @default(".txt")
-  data       Unsupported("")
+  extension  String?          @default(".txt")
+  data       String?
   learningId Int
   learning   Learning        @relation(references: [id], fields: [learningId])
+ @@map("learning_resource")
 }
 
 model Tokens {
@@ -99,5 +112,5 @@ model dataGenerated {
   userId    Int
   user      User      @relation(references: [id], fields: [userId], onDelete: Cascade)
 
-  @@map("dataGenerated")
+  @@map("data_generated")
 }
