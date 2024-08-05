@@ -4,10 +4,14 @@ import { ErrorCode, HTTPExceptions } from "./exceptions/root";
 import { ValidationError } from "./exceptions/validation_error";
 import { InternalException } from "./exceptions/internal_server";
 import { BadRequest } from "./exceptions/bad_request";
-import { tokenKey } from "./secrets";
+import { tokenKey } from "./secrets";      
+import { FirebaseException } from "exceptions/firebase";
+import firebaseAdmin from "firebase-admin";
+import { NotFoundException } from "exceptions/not_found";
 import { Jwt, TokenExpiredError } from "jsonwebtoken";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { PrismaClientError } from "./exceptions/prisma_client";
+
 
 // error handler
 export const errorHandler = (method: Function) => {
@@ -27,7 +31,7 @@ export const errorHandler = (method: Function) => {
                 if (error instanceof BadRequest) {
                     exception = error;
                     next(exception);
-                }
+                }  
                 if(error instanceof PrismaClientKnownRequestError){
                     next (new PrismaClientError(
                         "Prisma Client Error",

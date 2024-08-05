@@ -38,6 +38,7 @@ const createData = async (req, res, next) => {
             data: validatedData.data
         }
     });
+    // await firebaseAdmin().
     res.status(200).json(dataGenerated);
 };
 exports.createData = createData;

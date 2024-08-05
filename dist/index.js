@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prismaClient = exports.client = exports.cloudinaryConfig = void 0;
+exports.prismaClient = exports.client = exports.cloudinaryConfig = exports.firebaseAdmin = void 0;
 const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
 const secrets_1 = require("./secrets");
@@ -12,7 +12,13 @@ const root_1 = __importDefault(require("./routes/root"));
 const redis_1 = require("redis");
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const firebase_admin_1 = __importDefault(require("firebase-admin"));
 const app = (0, express_1.default)();
+var serviceAccount = require("../firebase_key.json");
+exports.firebaseAdmin = firebase_admin_1.default.initializeApp({
+    credential: firebase_admin_1.default.credential.cert(serviceAccount),
+    databaseURL: "firebase-adminsdk-la6na@jerrito-gemini-ai.iam.gserviceaccount.com"
+});
 app.use(express_1.default.json({
     limit: '50mb'
 }));

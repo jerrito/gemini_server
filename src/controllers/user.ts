@@ -32,7 +32,7 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
     }
 
     const user = await prisma.user.update({
-        where: {
+        where: { 
             id: req.user?.id
         },
         data:

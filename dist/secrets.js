@@ -3,14 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cloudinaryName = exports.cloudinaryApiSecret = exports.cloudinaryApiKey = exports.redisPort = exports.redisHost = exports.redisPassword = exports.refreshTokenKey = exports.tokenKey = exports.PORT = void 0;
+exports.cloudinaryName = exports.cloudinaryApiSecret = exports.cloudinaryApiKey = exports.redisPort = exports.redisHost = exports.redisPassword = exports.refreshTokenKey = exports.tokenKey = exports.PORT = exports.firebaseKey = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config({ path: ".env" });
+// firebase key
+exports.firebaseKey = process.env.firebaseKey;
 //port
 exports.PORT = process.env.Port;
-// refresh toen
+// refresh token
 exports.tokenKey = process.env.tokenKey;
-//refresh toen
+//refresh token
 exports.refreshTokenKey = process.env.refreshTokenKey;
 //redis password
 exports.redisPassword = process.env.redisPassword;
