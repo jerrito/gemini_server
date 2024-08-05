@@ -3,7 +3,7 @@ import authMiddleware from "../middlewares/auth";
 import { createData, deleteData, deleteMany, getDataById, listData } from "../controllers/data";
 import { errorHandler } from "../error_handler";
 import firebaseAuthMiddleware from "../middlewares/firebase_auth";
-import { createFireStoreData, getFirestoreDataById, listFirestoreData } from "../controllers/firebase/data";
+import { createFireStoreData, deleteFirestoreData, deleteListFirestoreData, getFirestoreDataById, listFirestoreData } from "../controllers/firebase/data";
 
 
 const dataRoute: Router = express.Router();
@@ -35,5 +35,11 @@ dataRoute.get("/firestore/data",errorHandler(getFirestoreDataById));
 
 //! list firestore data
 dataRoute.get("/firestore/datas",errorHandler(listFirestoreData));
+
+//! delete firestore data
+dataRoute.delete("/firestore/data",errorHandler(deleteFirestoreData),);
+
+//! delete firestore list data
+dataRoute.delete("/firestore/data/list",errorHandler(deleteListFirestoreData),);
 
 export default dataRoute;

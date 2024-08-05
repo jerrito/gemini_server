@@ -47,7 +47,7 @@ export const createFireStoreData=async(req:UserFirebase,res:Response, next:NextF
             "dateTime":Date.now()
         }
     );
-    res.status(200).json({data})
+    res.status(200).json((await data.get()).data())
 
 }
 
@@ -92,11 +92,37 @@ export const listFirestoreData=async(req:UserFirebase,res:Response)=>{
 export const deleteFirestoreData=async(req:UserFirebase,res:Response)=>{
     const id=req.query.id?.toString();
 
+    try{
     const data=await firebaseAdmin.firestore()
     .collection("data")
     .doc( uid)
     .collection("my_data")
     .doc(id!)
-    .delete();
-    res.status(200).json({"message":"Successfully deleted"});
+    .delete({
+        exists:true
+    });
+    
+    }
+    catch(e:any){
+        
+        throw new BadRequest(e.toString(),
+            ErrorCode.NOT_FOUND)
+        }
+        res.status(200).json({"success":true});
+
+    
+}
+
+export const deleteListFirestoreData=async(req:UserFirebase,res:Response)=>{
+    const {list}=req.body;
+    const batchDelete=await firebaseAdmin.firestore().batch();
+    const data=await firebaseAdmin.firestore().collection("data")
+    .doc(uid)
+    .collection("my_data");
+    for (let i = 0; i < list.length; i++) {
+       batchDelete.delete(data.doc(list[i]));
+    }
+    await batchDelete.commit();
+    res.status(200).json({"success":true});
+    
 }
