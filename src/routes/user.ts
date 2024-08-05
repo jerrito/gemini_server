@@ -3,6 +3,7 @@ import { errorHandler } from "../error_handler";
 import { changePassword, deleteAccount, updatePicture, userProfileUpdate } from "../controllers/user";
 import authMiddleware from "../middlewares/auth";
 import { deleteFirebaseAccount, updateFirebasePicture, userUpdate } from "../controllers/firebase/user";
+import firebaseAuthMiddleware from "../middlewares/firebase_auth";
 
 
 export const userRouter: Router = express.Router();
@@ -26,10 +27,10 @@ userRouter.delete("", [authMiddleware], errorHandler(deleteAccount,),);
 //! FIREBASE ROUTES
 
 //! firebase update user
-userRouter.patch("/firebase/profile",errorHandler(userUpdate));
+userRouter.patch("/firebase/profile",[firebaseAuthMiddleware as any],errorHandler(userUpdate));
 
 //! firebase update picture
-userRouter.patch("/firebase/profile",errorHandler(updateFirebasePicture,),);
+userRouter.patch("/firebase/profile",[firebaseAuthMiddleware as any],errorHandler(updateFirebasePicture,),);
 
 //! delete user 
-userRouter.delete("/firebase/profile",errorHandler(deleteFirebaseAccount));
+userRouter.delete("/firebase/profile",[firebaseAuthMiddleware as any],errorHandler(deleteFirebaseAccount));

@@ -67,10 +67,8 @@ export const refreshToken=async(req:Request,res:Response)=>{
     if (!decodedIdToken) {
         throw new BadRequest("Refresh token is not valid", ErrorCode.UNAUTHORIZED);
       }
-    const token=await firebaseAdmin.auth().createCustomToken(
-       decodedIdToken.uid
-    );
-     res.status(200).json({"token":token})
+   
+     res.status(200).json({"token":refreshToken})
 }
 
 export const logOut=async(req:UserFirebase,res:Response)=>{

@@ -7,6 +7,7 @@ const express_1 = __importDefault(require("express"));
 const auth_1 = __importDefault(require("../middlewares/auth"));
 const data_1 = require("../controllers/data");
 const error_handler_1 = require("../error_handler");
+const firebase_auth_1 = __importDefault(require("../middlewares/firebase_auth"));
 const data_2 = require("../controllers/firebase/data");
 const dataRoute = express_1.default.Router();
 //! Create  Data
@@ -21,13 +22,13 @@ dataRoute.delete("/data/delete/list", [auth_1.default], (0, error_handler_1.erro
 dataRoute.get("/data/:id", [auth_1.default], (0, error_handler_1.errorHandler)(data_1.getDataById));
 //! FIRESTORE TRANSACTIONS
 //! Create Data Firebase
-dataRoute.post("/firestore/data", (0, error_handler_1.errorHandler)(data_2.createFireStoreData));
+dataRoute.post("/firestore/data", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.createFireStoreData));
 //! get document by id 
-dataRoute.get("/firestore/data", (0, error_handler_1.errorHandler)(data_2.getFirestoreDataById));
+dataRoute.get("/firestore/data", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.getFirestoreDataById));
 //! list firestore data
-dataRoute.get("/firestore/datas", (0, error_handler_1.errorHandler)(data_2.listFirestoreData));
+dataRoute.get("/firestore/datas", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.listFirestoreData));
 //! delete firestore data
-dataRoute.delete("/firestore/data", (0, error_handler_1.errorHandler)(data_2.deleteFirestoreData));
+dataRoute.delete("/firestore/data", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteFirestoreData));
 //! delete firestore list data
-dataRoute.delete("/firestore/data/list", (0, error_handler_1.errorHandler)(data_2.deleteListFirestoreData));
+dataRoute.delete("/firestore/data/list", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteListFirestoreData));
 exports.default = dataRoute;
