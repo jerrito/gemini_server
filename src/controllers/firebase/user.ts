@@ -7,7 +7,6 @@ import { UserRecord } from "firebase-admin/lib/auth/user-record";
 import cloudinary from 'cloudinary';
 import { imageSchema } from "../../validation/user";
 
-const uid="NrdJLtUCGed21strFNSgL0sJcj82";
 
 export const userUpdate=async(req:UserFirebase,res:Response)=>{
 
@@ -16,7 +15,7 @@ export const userUpdate=async(req:UserFirebase,res:Response)=>{
     
 
    const user=await firebaseAdmin.auth().updateUser(
-        uid,{
+        req.firebaseUser?.uid,{
          email:email,
             displayName:userName
         }
@@ -26,7 +25,7 @@ export const userUpdate=async(req:UserFirebase,res:Response)=>{
 
 export const updateFirebasePicture=async(req:UserFirebase,res:Response)=>{
     const validatedImageArray = imageSchema.parse(req.body);
-    let url: string = uid;
+    let url: string = req.firebaseUser?.uid;
     const da = new Uint8Array(validatedImageArray.data);
     try {
         const uploadResult = await new Promise((resolve) => {
@@ -47,7 +46,7 @@ export const updateFirebasePicture=async(req:UserFirebase,res:Response)=>{
         );
     }
     const user=await firebaseAdmin.auth().updateUser(
-        uid,
+        req.firebaseUser?.uid,
         {
             photoURL:url
         }
@@ -59,16 +58,16 @@ export const updateFirebasePicture=async(req:UserFirebase,res:Response)=>{
 export const deleteFirebaseAccount=async(req:UserFirebase,res:Response)=>{
 
     const user=await firebaseAdmin.auth().getUser(
-        uid
+        req.firebaseUser?.uid
     );
     if(!user){
         throw new BadRequest(
-            "No user found with this uid",
+            "No user found with this req.firebaseUser?.uid",
             ErrorCode.NOT_FOUND
         )
     }
    const deletedUser= await firebaseAdmin.auth().deleteUser(
-        uid
+        req.firebaseUser?.uid
     );
     res.status(200).json({ "message": `${user.displayName} account deleted successfully` });
 

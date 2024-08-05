@@ -7,7 +7,8 @@ const express_1 = __importDefault(require("express"));
 const auth_1 = require("../controllers/auth");
 const error_handler_1 = require("../error_handler");
 const auth_2 = __importDefault(require("../middlewares/auth"));
-const auth_3 = require("controllers/firebase/auth");
+const auth_3 = require("../controllers/firebase/auth");
+const firebase_auth_1 = __importDefault(require("../middlewares/firebase_auth"));
 const authRouter = express_1.default.Router();
 //! signup
 authRouter.post("/signup", (0, error_handler_1.errorHandler)(auth_1.signup));
@@ -19,6 +20,13 @@ authRouter.get("/me", [auth_2.default], (0, error_handler_1.errorHandler)(auth_1
 authRouter.post("/logout", [auth_2.default], (0, error_handler_1.errorHandler)(auth_1.logOut));
 //! refresh token
 authRouter.post("/refresh", (0, error_handler_1.errorHandler)(auth_1.refreshToken));
+// Firebase
 //! signup firebase
-authRouter.post("/signup", (0, error_handler_1.errorHandler)(auth_3.firebaseSignup));
+authRouter.post("/firebase/signup", (0, error_handler_1.errorHandler)(auth_3.firebaseSignup));
+//! signin
+authRouter.post("/firebase/signin", (0, error_handler_1.errorHandler)(auth_3.firebaseSignin));
+//! get firebase user
+authRouter.get("/firebase/me", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(auth_3.getFirebaseUser));
+//! log out
+authRouter.post("firebase/logout", (0, error_handler_1.errorHandler)(auth_3.logOut));
 exports.default = authRouter;

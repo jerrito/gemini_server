@@ -35,6 +35,11 @@ const errorHandler = (method) => {
                 if (error instanceof zod_1.ZodError) {
                     next(new validation_error_1.ValidationError("Validation error", error.message));
                 }
+                // if(error instanceof FirebaseAuthError){
+                //     next(new ValidationError(
+                //         "Validation error",
+                //         error.message,),);
+                // }
                 if (error instanceof jsonwebtoken_1.TokenExpiredError) {
                     next(new validation_error_1.ValidationError("Token Expired error", error.message));
                 }

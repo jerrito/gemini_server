@@ -21,4 +21,4 @@ var ErrorCode;
     ErrorCode[ErrorCode["UNAUTHORIZED"] = 401] = "UNAUTHORIZED";
     ErrorCode[ErrorCode["Password_Wrong"] = 407] = "Password_Wrong";
     ErrorCode[ErrorCode["ValidationError"] = 409] = "ValidationError";
-})(ErrorCode || (exports.ErrorCode = ErrorCode = {}));
+})(ErrorCode = exports.ErrorCode || (exports.ErrorCode = {}));
