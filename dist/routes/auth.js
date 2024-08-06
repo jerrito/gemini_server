@@ -22,7 +22,7 @@ authRouter.post("/logout", [auth_2.default], (0, error_handler_1.errorHandler)(a
 authRouter.post("/refresh", (0, error_handler_1.errorHandler)(auth_1.refreshToken));
 // Firebase
 //! signup firebase
-authRouter.post("/firebase/signup", (0, error_handler_1.errorHandler)(auth_3.firebaseSignup));
+authRouter.post("/firebase/signup", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(auth_3.firebaseSignup));
 //! signin
 authRouter.post("/firebase/signin", (0, error_handler_1.errorHandler)(auth_3.firebaseSignin));
 //! get firebase user

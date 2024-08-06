@@ -6,9 +6,10 @@ const user_1 = require("../../validation/user");
 const bad_request_1 = require("../../exceptions/bad_request");
 const root_1 = require("../../exceptions/root");
 const firebaseSignup = async (req, res) => {
+    var _a;
     const userSchema = user_1.userValidation.parse(req.body);
     let user;
-    user = await index_1.firebaseAdmin.auth().createUser({
+    user = await index_1.firebaseAdmin.auth().updateUser((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid, {
         email: userSchema.email,
         emailVerified: false,
         phoneNumber: userSchema.phoneNumber,

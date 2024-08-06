@@ -28,7 +28,7 @@ authRouter.post("/refresh", errorHandler(refreshToken))
 // Firebase
 
 //! signup firebase
-authRouter.post("/firebase/signup",errorHandler(firebaseSignup),);
+authRouter.post("/firebase/signup",[firebaseAuthMiddleware as any],errorHandler(firebaseSignup),);
 
 //! signin
 authRouter.post("/firebase/signin",errorHandler(firebaseSignin))
