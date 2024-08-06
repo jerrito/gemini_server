@@ -8,13 +8,15 @@ import { UserFirebase } from "../../types/index";
 import { compareSync } from "bcrypt";
 
 
-export const firebaseSignup=async(req:Request,res:Response)=>{
+export const firebaseSignup=async(req:UserFirebase,res:Response)=>{
 
   const userSchema=userValidation.parse(req.body);
 
  let  user:UserRecord;
  
-   user=  await firebaseAdmin.auth().createUser({
+   user=  await firebaseAdmin.auth().updateUser(
+    req.firebaseUser?.uid,
+    {
       email: userSchema.email,
       emailVerified: false,
       phoneNumber: userSchema.phoneNumber,
