@@ -55,7 +55,6 @@ export const firebaseSignin=async(req:Request,res:Response)=>{
 }
 
 }
-// eUi4TCnORoOSGw4hHQ95ip:APA91bFnKW4sITT6lHOknBhTNouR2DsQ0qUB4_WZ7Kgz8EXkLhcxhLcAq_47G0WMgRJIkcU4FVKQ_OWdb0zfIx387jZvn0qwSBuoSsWZjZpV9OwaxWoRseSsct31aB2KefagH7UccJ7n
 export const getFirebaseUser=async (req:UserFirebase,res:Response)=>{
    
     
