@@ -30,7 +30,7 @@ userRouter.delete("", [authMiddleware], errorHandler(deleteAccount,),);
 userRouter.patch("/firebase/profile",[firebaseAuthMiddleware as any],errorHandler(userUpdate));
 
 //! firebase update picture
-userRouter.patch("/firebase/profile",[firebaseAuthMiddleware as any],errorHandler(updateFirebasePicture,),);
+userRouter.patch("/firebase/profile/picture",[firebaseAuthMiddleware as any],errorHandler(updateFirebasePicture,),);
 
 //! delete user 
 userRouter.delete("/firebase/profile",[firebaseAuthMiddleware as any],errorHandler(deleteFirebaseAccount));
