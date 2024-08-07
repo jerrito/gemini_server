@@ -3,13 +3,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prismaClient = exports.client = exports.cloudinaryConfig = exports.firebaseAdmin = void 0;
+exports.prismaClient = exports.cloudinaryConfig = exports.firebaseAdmin = void 0;
 const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
 const secrets_1 = require("./secrets");
 const error_1 = require("./middlewares/error");
 const root_1 = __importDefault(require("./routes/root"));
-const redis_1 = require("redis");
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const firebase_admin_1 = __importDefault(require("firebase-admin"));
@@ -31,15 +30,15 @@ exports.cloudinaryConfig = cloudinary_1.default.v2.config({
     api_key: secrets_1.cloudinaryApiKey,
     api_secret: secrets_1.cloudinaryApiSecret
 });
-// redis client config
-exports.client = (0, redis_1.createClient)({
-    password: secrets_1.redisPassword,
-    socket: {
-        host: secrets_1.redisHost,
-        port: Number(secrets_1.redisPort)
-    },
-    legacyMode: true,
-});
+// // redis client config
+// export const client = createClient({
+//     password: redisPassword,
+//     socket: {
+//         host: redisHost,
+//         port: Number(redisPort)
+//     },
+//     legacyMode: true,
+// });
 exports.prismaClient = new client_1.PrismaClient({
     log: ["query"],
 });

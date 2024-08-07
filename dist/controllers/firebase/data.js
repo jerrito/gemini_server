@@ -44,15 +44,16 @@ const createFireStoreData = async (req, res, next) => {
 };
 exports.createFireStoreData = createFireStoreData;
 const getFirestoreDataById = async (req, res) => {
-    var _a, _b;
-    const id = (_a = req.query.id) === null || _a === void 0 ? void 0 : _a.toString();
+    var _a;
+    const id = req.params.id.toString();
     console.log(id);
     try {
         const data = await index_1.firebaseAdmin.firestore()
             .collection("data")
-            .doc((_b = req.firebaseUser) === null || _b === void 0 ? void 0 : _b.uid)
+            .doc((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid)
             .collection("my_data")
-            .doc(id).get();
+            .doc(id)
+            .get();
         res.status(200).json(data.data());
     }
     catch (e) {
@@ -77,7 +78,7 @@ const listFirestoreData = async (req, res) => {
 exports.listFirestoreData = listFirestoreData;
 const deleteFirestoreData = async (req, res) => {
     var _a, _b;
-    const id = (_a = req.query.id) === null || _a === void 0 ? void 0 : _a.toString();
+    const id = (_a = req.params.id) === null || _a === void 0 ? void 0 : _a.toString();
     try {
         const data = await index_1.firebaseAdmin.firestore()
             .collection("data")

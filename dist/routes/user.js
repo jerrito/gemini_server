@@ -23,6 +23,6 @@ exports.userRouter.delete("", [auth_1.default], (0, error_handler_1.errorHandler
 //! firebase update user
 exports.userRouter.patch("/firebase/profile", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(user_2.userUpdate));
 //! firebase update picture
-exports.userRouter.patch("/firebase/profile", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(user_2.updateFirebasePicture));
+exports.userRouter.patch("/firebase/profile/picture", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(user_2.updateFirebasePicture));
 //! delete user 
 exports.userRouter.delete("/firebase/profile", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(user_2.deleteFirebaseAccount));
