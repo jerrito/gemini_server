@@ -1,5 +1,8 @@
 {
-  "watch": ["src", "dist"],
+  "watch": [
+    "src",
+    "dist"
+  ],
   "ext": ".ts,.js",
   "exec": "npx ts-node ./dist/index.js"
 }

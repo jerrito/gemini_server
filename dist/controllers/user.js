@@ -8,8 +8,8 @@ const cloudinary_1 = __importDefault(require("cloudinary"));
 const prisma_client_1 = require("../prisma_client");
 const bad_request_1 = require("../exceptions/bad_request");
 const root_1 = require("../exceptions/root");
-const bcrypt_1 = require("bcrypt");
 const user_1 = require("../validation/user");
+const bcryptjs_1 = require("bcryptjs");
 // update user profile
 const userProfileUpdate = async (req, res) => {
     var _a;
@@ -80,14 +80,14 @@ const changePassword = async (req, res) => {
             id: req.user.id
         }
     });
-    const checkOldPassword = (0, bcrypt_1.compareSync)(passwordValidator.old_password, user.password);
+    const checkOldPassword = (0, bcryptjs_1.compareSync)(passwordValidator.old_password, user.password);
     if (!checkOldPassword) {
         throw new bad_request_1.BadRequest("old password is incorrect", root_1.ErrorCode.Password_Wrong);
     }
     if (passwordValidator.new_password !== passwordValidator.confirm_password) {
         throw new bad_request_1.BadRequest("new password and confirm password are not same", root_1.ErrorCode.Password_Wrong);
     }
-    const hashPassword = (0, bcrypt_1.hashSync)(passwordValidator.new_password, 10);
+    const hashPassword = (0, bcryptjs_1.hashSync)(passwordValidator.new_password, 10);
     const userUpdate = await prisma_client_1.prisma.user.update({
         where: {
             id: req.user.id
@@ -109,7 +109,7 @@ const deleteAccount = async (req, res) => {
     if (!user) {
         throw new bad_request_1.BadRequest("User not found", root_1.ErrorCode.NOT_FOUND);
     }
-    const checkPassword = (0, bcrypt_1.compareSync)(password, user.password);
+    const checkPassword = (0, bcryptjs_1.compareSync)(password, user.password);
     if (!checkPassword) {
         throw new bad_request_1.BadRequest("Password error", root_1.ErrorCode.Password_Wrong);
     }

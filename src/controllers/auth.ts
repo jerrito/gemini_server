@@ -3,25 +3,25 @@ import express, { Request, Response, NextFunction } from "express";
 import { BadRequest } from "../exceptions/bad_request";
 import { ErrorCode } from '../exceptions/root';
 import { userValidation } from "../validation/user";
-import { compareSync, hashSync } from "bcrypt";
 import * as jwt from "jsonwebtoken";
 import { refreshTokenKey, tokenKey } from "../secrets";
 import { NotFoundException } from "../exceptions/not_found";
 import { prisma } from "../prisma_client";
 import redis from "redis";
-import { client, firebaseAdmin } from "../index";
+import { firebaseAdmin } from "../index";
 import { Role } from "@prisma/client";
 import ff from "firebase-admin/lib/credential";
+import { compareSync, hashSync } from "bcryptjs";
 
 
 
 // Sign Up
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
 
-  const userSchema=userValidation.parse(req.body);
-  
+  const userSchema = userValidation.parse(req.body);
 
-  const { userName, email, password,  role } = req.body;
+
+  const { userName, email, password, role } = req.body;
 
   let user = await prisma.user.findFirst({
     where: {
@@ -43,7 +43,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
       password: hashSync(password, 10),
     },
   });
-  
+
 
   const refreshToken = jwt.sign({
     id: user.id,
@@ -51,10 +51,10 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     refreshTokenKey,
     { expiresIn: '30 days' }
   );
- 
+
   res.status(200).json({
     "user": user, "refreshToken": refreshToken,
-     
+
   })
 
 }

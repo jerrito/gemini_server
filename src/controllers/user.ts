@@ -5,9 +5,9 @@ import { prisma } from "../prisma_client";
 import { BadRequest } from "../exceptions/bad_request";
 import { ErrorCode } from "../exceptions/root";
 import fs from "node:fs"
-import { compareSync, hashSync } from "bcrypt";
 
 import { imageSchema, passwordSchema } from "../validation/user";
+import { compareSync, hashSync } from "bcryptjs";
 
 
 // update user profile
@@ -32,7 +32,7 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
     }
 
     const user = await prisma.user.update({
-        where: { 
+        where: {
             id: req.user?.id
         },
         data:
@@ -43,7 +43,7 @@ export const userProfileUpdate = async (req: Request, res: Response) => {
                     userName
                 }
     });
-    res.status(200).json({user});
+    res.status(200).json({ user });
 
 }
 

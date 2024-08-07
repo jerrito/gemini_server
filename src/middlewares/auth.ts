@@ -7,7 +7,6 @@ import { UnauthorizedException } from "../exceptions/unauthorized";
 import { BadRequest } from "../exceptions/bad_request";
 import { prisma } from "../prisma_client";
 import redis, { createClient } from "redis";
-import { client } from "..";
 const connectionString = `${process.env.DATABASE_URL}`
 
 // auth middleware
@@ -25,30 +24,30 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
             ErrorCode.UNAUTHORIZED,
         ),)
     }
-       const tokenBlackListed= await prisma.tokens.findFirst({
-        where:{
-            token:token,
-            isValid:false
+    const tokenBlackListed = await prisma.tokens.findFirst({
+        where: {
+            token: token,
+            isValid: false
         }
-       })
-         if(tokenBlackListed){
-            next( new BadRequest("Invalid token",
-                ErrorCode.UNAUTHORIZED,));
-         }
+    })
+    if (tokenBlackListed) {
+        next(new BadRequest("Invalid token",
+            ErrorCode.UNAUTHORIZED,));
+    }
 
-    
+
     // await client.connect();
     //   const tokenBlackListed=await client.get("token");
 
     //   console.log(tokenBlackListed);
     //   await client.disconnect();
 
-     if(tokenBlackListed !=null){
-        next( new BadRequest("Invalid token",
+    if (tokenBlackListed != null) {
+        next(new BadRequest("Invalid token",
             ErrorCode.UNAUTHORIZED,));
-     }
-    
-  
+    }
+
+
     try {
         // 3. get the user fro payload
 

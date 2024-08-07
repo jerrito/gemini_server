@@ -27,11 +27,11 @@ exports.refreshToken = exports.logOut = exports.me = exports.signin = exports.si
 const bad_request_1 = require("../exceptions/bad_request");
 const root_1 = require("../exceptions/root");
 const user_1 = require("../validation/user");
-const bcrypt_1 = require("bcrypt");
 const jwt = __importStar(require("jsonwebtoken"));
 const secrets_1 = require("../secrets");
 const not_found_1 = require("../exceptions/not_found");
 const prisma_client_1 = require("../prisma_client");
+const bcryptjs_1 = require("bcryptjs");
 // Sign Up
 const signup = async (req, res, next) => {
     const userSchema = user_1.userValidation.parse(req.body);
@@ -50,7 +50,7 @@ const signup = async (req, res, next) => {
             userName,
             email,
             role,
-            password: (0, bcrypt_1.hashSync)(password, 10),
+            password: (0, bcryptjs_1.hashSync)(password, 10),
         },
     });
     const refreshToken = jwt.sign({
@@ -72,7 +72,7 @@ const signin = async (req, res, next) => {
     if (!user) {
         throw new not_found_1.NotFoundException("User not found", root_1.ErrorCode.NOT_FOUND);
     }
-    const checkPassword = (0, bcrypt_1.compareSync)(password, user === null || user === void 0 ? void 0 : user.password);
+    const checkPassword = (0, bcryptjs_1.compareSync)(password, user === null || user === void 0 ? void 0 : user.password);
     if (!checkPassword) {
         throw new bad_request_1.BadRequest("Password incorrect", root_1.ErrorCode.BAD_REQUEST);
     }

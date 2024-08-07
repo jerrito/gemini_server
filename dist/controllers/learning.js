@@ -1,11 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.learningLink = exports.addLearning = void 0;
 const prisma_client_1 = require("../prisma_client");
-const bcrypt_1 = __importDefault(require("bcrypt"));
 const addLearning = async (req, res) => {
     const { title, data, url } = req.body;
     const user = await prisma_client_1.prisma.user.findFirstOrThrow({
@@ -54,7 +50,7 @@ exports.addLearning = addLearning;
 const learningLink = async (req, res) => {
     var _a;
     const link = Math.random().toString();
-    bcrypt_1.default.genSaltSync(12).toString();
+    // bcrypt.genSaltSync(12).toString();
     const checkLink = await prisma_client_1.prisma.learningLink.findFirstOrThrow({
         where: {
             link

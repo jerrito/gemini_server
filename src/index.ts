@@ -34,15 +34,15 @@ export const cloudinaryConfig = cloudinary.v2.config({
     api_secret: cloudinaryApiSecret
 });
 
-// redis client config
-export const client = createClient({
-    password: redisPassword,
-    socket: {
-        host: redisHost,
-        port: Number(redisPort)
-    },
-    legacyMode: true,
-});
+// // redis client config
+// export const client = createClient({
+//     password: redisPassword,
+//     socket: {
+//         host: redisHost,
+//         port: Number(redisPort)
+//     },
+//     legacyMode: true,
+// });
 
 
 export const prismaClient = new PrismaClient({

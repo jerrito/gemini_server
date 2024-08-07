@@ -40,7 +40,6 @@ const firebaseSignin = async (req, res) => {
     }
 };
 exports.firebaseSignin = firebaseSignin;
-// eUi4TCnORoOSGw4hHQ95ip:APA91bFnKW4sITT6lHOknBhTNouR2DsQ0qUB4_WZ7Kgz8EXkLhcxhLcAq_47G0WMgRJIkcU4FVKQ_OWdb0zfIx387jZvn0qwSBuoSsWZjZpV9OwaxWoRseSsct31aB2KefagH7UccJ7n
 const getFirebaseUser = async (req, res) => {
     var _a;
     return res.status(200).json((_a = req === null || req === void 0 ? void 0 : req.firebaseUser) !== null && _a !== void 0 ? _a : "User");
