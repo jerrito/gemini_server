@@ -75,7 +75,7 @@ export const listFirestoreData = async (req: UserFirebase, res: Response) => {
     let ids:String[]=[];
     const data = await firebaseAdmin.firestore()
         .collection("data")
-        .doc("qjeAQNNk9uXdfJXBQUHNDDZySAF3")
+        .doc(req.firebaseUser?.uid)
         .collection("my_data")
         .get();
     data.forEach(async (e) => {
@@ -116,8 +116,8 @@ export const deleteFirestoreData = async (req: UserFirebase, res: Response) => {
 
 export const deleteListFirestoreData = async (req: UserFirebase, res: Response) => {
     const { list } = req.body;
-    const batchDelete = await firebaseAdmin.firestore().batch();
-    const data = await firebaseAdmin.firestore().collection("data")
+    const batchDelete =  firebaseAdmin.firestore().batch();
+    const data =  firebaseAdmin.firestore().collection("data")
         .doc(req.firebaseUser?.uid)
         .collection("my_data");
     for (let i = 0; i < list.length; i++) {

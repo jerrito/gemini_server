@@ -30,14 +30,14 @@ dataRoute.get("/data/:id", [authMiddleware], errorHandler(getDataById));
 dataRoute.post("/firestore/data", [firebaseAuthMiddleware as any], errorHandler(createFireStoreData));
 
 //! get document by id 
-dataRoute.get("/firestore/data", [firebaseAuthMiddleware as any], errorHandler(getFirestoreDataById));
+dataRoute.get("/firestore/data/:id", [firebaseAuthMiddleware as any], errorHandler(getFirestoreDataById));
 
 
 //! list firestore data
 dataRoute.get("/firestore/datas", errorHandler(listFirestoreData));
 
 //! delete firestore data
-dataRoute.delete("/firestore/data", [firebaseAuthMiddleware as any], errorHandler(deleteFirestoreData),);
+dataRoute.delete("/firestore/data/:id", [firebaseAuthMiddleware as any], errorHandler(deleteFirestoreData),);
 
 //! delete firestore list data
 dataRoute.delete("/firestore/data/list",  errorHandler(deleteListFirestoreData),);

@@ -62,11 +62,12 @@ const getFirestoreDataById = async (req, res) => {
 };
 exports.getFirestoreDataById = getFirestoreDataById;
 const listFirestoreData = async (req, res) => {
+    var _a;
     let all = [];
     let ids = [];
     const data = await index_1.firebaseAdmin.firestore()
         .collection("data")
-        .doc("qjeAQNNk9uXdfJXBQUHNDDZySAF3")
+        .doc((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid)
         .collection("my_data")
         .get();
     data.forEach(async (e) => {
@@ -98,8 +99,8 @@ exports.deleteFirestoreData = deleteFirestoreData;
 const deleteListFirestoreData = async (req, res) => {
     var _a;
     const { list } = req.body;
-    const batchDelete = await index_1.firebaseAdmin.firestore().batch();
-    const data = await index_1.firebaseAdmin.firestore().collection("data")
+    const batchDelete = index_1.firebaseAdmin.firestore().batch();
+    const data = index_1.firebaseAdmin.firestore().collection("data")
         .doc((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid)
         .collection("my_data");
     for (let i = 0; i < list.length; i++) {
