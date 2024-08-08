@@ -24,11 +24,11 @@ dataRoute.get("/data/:id", [auth_1.default], (0, error_handler_1.errorHandler)(d
 //! Create Data Firebase
 dataRoute.post("/firestore/data", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.createFireStoreData));
 //! get document by id 
-dataRoute.get("/firestore/data", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.getFirestoreDataById));
+dataRoute.get("/firestore/data/:id", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.getFirestoreDataById));
 //! list firestore data
 dataRoute.get("/firestore/datas", (0, error_handler_1.errorHandler)(data_2.listFirestoreData));
 //! delete firestore data
-dataRoute.delete("/firestore/data", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteFirestoreData));
+dataRoute.delete("/firestore/data/:id", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteFirestoreData));
 //! delete firestore list data
 dataRoute.delete("/firestore/data/list", (0, error_handler_1.errorHandler)(data_2.deleteListFirestoreData));
 exports.default = dataRoute;
