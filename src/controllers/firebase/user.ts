@@ -20,7 +20,7 @@ export const userUpdate=async(req:UserFirebase,res:Response)=>{
             displayName:userName
         }
     );
-    res.status(200).json({user})
+    res.status(200).json(user)
 }
 
 export const updateFirebasePicture=async(req:UserFirebase,res:Response)=>{

@@ -24,7 +24,7 @@ export const firebaseSignup = async (req: UserFirebase, res: Response) => {
       disabled: false,
     });
 
-  res.status(200).json({ user });
+  res.status(200).json(user );
 
 }
 
@@ -49,7 +49,7 @@ export const firebaseSignin = async (req: Request, res: Response) => {
     if (password != user?.passwordSalt ?? "") {
       throw new BadRequest("Password doesn't match", ErrorCode.Password_Wrong);
     }
-    res.status(200).json({ user });
+    res.status(200).json( user );
   }
 
 }
