@@ -42,7 +42,7 @@ export const createFireStoreData = async (req: UserFirebase, res: Response, next
                 "title": validatedData.title,
                 "data": validatedData.data,
                 "hasImage": validatedData.hasImage,
-                "dataImage": validatedData.dataImage,
+                "dataImage": url,
                 "dateTime": Date.now()
             }
         );
@@ -72,21 +72,22 @@ export const getFirestoreDataById = async (req: UserFirebase, res: Response) => 
 
 export const listFirestoreData = async (req: UserFirebase, res: Response) => {
     let all: {}[] = [];
-    let l = ["e", 1];
+    let ids:String[]=[];
     const data = await firebaseAdmin.firestore()
         .collection("data")
-        .doc(req.firebaseUser?.uid)
+        .doc("qjeAQNNk9uXdfJXBQUHNDDZySAF3")
         .collection("my_data")
         .get();
     data.forEach(async (e) => {
 
         all.push(e.data());
+        ids.push(e.id);
 
 
     });
 
 
-    res.status(200).json({ all });
+    res.status(200).json({"list":all,"ids":ids} );
 }
 
 export const deleteFirestoreData = async (req: UserFirebase, res: Response) => {

@@ -26,9 +26,9 @@ dataRoute.post("/firestore/data", [firebase_auth_1.default], (0, error_handler_1
 //! get document by id 
 dataRoute.get("/firestore/data", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.getFirestoreDataById));
 //! list firestore data
-dataRoute.get("/firestore/datas", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.listFirestoreData));
+dataRoute.get("/firestore/datas", (0, error_handler_1.errorHandler)(data_2.listFirestoreData));
 //! delete firestore data
 dataRoute.delete("/firestore/data", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteFirestoreData));
 //! delete firestore list data
-dataRoute.delete("/firestore/data/list", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteListFirestoreData));
+dataRoute.delete("/firestore/data/list", (0, error_handler_1.errorHandler)(data_2.deleteListFirestoreData));
 exports.default = dataRoute;

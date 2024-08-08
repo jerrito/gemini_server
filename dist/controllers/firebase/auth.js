@@ -17,7 +17,7 @@ const firebaseSignup = async (req, res) => {
         displayName: userSchema.userName,
         disabled: false,
     });
-    res.status(200).json({ user });
+    res.status(200).json(user);
 };
 exports.firebaseSignup = firebaseSignup;
 const firebaseSignin = async (req, res) => {
@@ -36,7 +36,7 @@ const firebaseSignin = async (req, res) => {
         if ((_a = password != (user === null || user === void 0 ? void 0 : user.passwordSalt)) !== null && _a !== void 0 ? _a : "") {
             throw new bad_request_1.BadRequest("Password doesn't match", root_1.ErrorCode.Password_Wrong);
         }
-        res.status(200).json({ user });
+        res.status(200).json(user);
     }
 };
 exports.firebaseSignin = firebaseSignin;
