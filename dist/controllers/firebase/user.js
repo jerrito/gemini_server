@@ -17,7 +17,7 @@ const userUpdate = async (req, res) => {
         email: email,
         displayName: userName
     });
-    res.status(200).json({ user });
+    res.status(200).json(user);
 };
 exports.userUpdate = userUpdate;
 const updateFirebasePicture = async (req, res) => {
