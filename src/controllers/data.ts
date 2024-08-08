@@ -60,6 +60,7 @@ export const listData = async (req: Request, res: Response, next: NextFunction) 
             id: 'desc'
         },
         where: {
+             
             userId: req!.user!.id!,
         }
     });

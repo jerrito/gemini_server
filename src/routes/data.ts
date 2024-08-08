@@ -34,12 +34,12 @@ dataRoute.get("/firestore/data", [firebaseAuthMiddleware as any], errorHandler(g
 
 
 //! list firestore data
-dataRoute.get("/firestore/datas", [firebaseAuthMiddleware as any], errorHandler(listFirestoreData));
+dataRoute.get("/firestore/datas", errorHandler(listFirestoreData));
 
 //! delete firestore data
 dataRoute.delete("/firestore/data", [firebaseAuthMiddleware as any], errorHandler(deleteFirestoreData),);
 
 //! delete firestore list data
-dataRoute.delete("/firestore/data/list", [firebaseAuthMiddleware as any], errorHandler(deleteListFirestoreData),);
+dataRoute.delete("/firestore/data/list",  errorHandler(deleteListFirestoreData),);
 
 export default dataRoute;
