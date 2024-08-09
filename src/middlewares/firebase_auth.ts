@@ -9,7 +9,6 @@ import { any } from "zod";
  const firebaseAuthMiddleware=async(req:UserFirebase,res:Response,next:NextFunction)=>{
 
      const token=req.headers.authorization;
-     console.log("dd");
      try{
 
     const decodedIdToken=await firebaseAdmin.auth().verifyIdToken(
@@ -42,7 +41,7 @@ import { any } from "zod";
         (new UnauthorizedException(
             e.toString(),
             ErrorCode.NOT_FOUND,
-           ))   ); 
+           ))  ); 
     
         }
   next();
