@@ -40,6 +40,6 @@ dataRoute.get("/firestore/datas", [firebaseAuthMiddleware as any], errorHandler(
 dataRoute.delete("/firestore/data/:id", [firebaseAuthMiddleware as any], errorHandler(deleteFirestoreData),);
 
 //! delete firestore list data
-dataRoute.delete("/firestore/delete/list", [firebaseAuthMiddleware as any], errorHandler(deleteListFirestoreData),);
+dataRoute.delete("/firestore/delete/list", errorHandler(deleteListFirestoreData),);
 
 export default dataRoute;
