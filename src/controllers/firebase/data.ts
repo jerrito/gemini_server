@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { dataSchema } from "../../validation/data";
-import { firebaseAdmin } from "../../index";
+import { data, firebaseAdmin } from "../../index";
 import { UserFirebase } from "../../types/index";
 import { BadRequest } from "../../exceptions/bad_request";
 import { ErrorCode } from "../../exceptions/root";
@@ -33,10 +33,7 @@ export const createFireStoreData = async (req: UserFirebase, res: Response, next
             );
         }
     }
-    const data = await firebaseAdmin.firestore()
-        .collection("data")
-        .doc(req.firebaseUser?.uid)
-        .collection("my_data")
+    const da = await data(req)
         .add(
             {
                 "title": validatedData.title,
@@ -46,7 +43,7 @@ export const createFireStoreData = async (req: UserFirebase, res: Response, next
                 "dateTime": Date.now()
             }
         );
-    res.status(200).json((await data.get()).data())
+    res.status(200).json((await da.get()).data())
 
 }
 
@@ -56,13 +53,10 @@ export const getFirestoreDataById = async (req: UserFirebase, res: Response) => 
     console.log(id);
 
     try {
-        const data = await firebaseAdmin.firestore()
-            .collection("data")
-            .doc(req.firebaseUser?.uid)
-            .collection("my_data")
+        const da = await data(req)
             .doc(id)
             .get();
-        res.status(200).json(data.data());
+        res.status(200).json(da.data());
     } catch (e: any) {
         throw new BadRequest("Document id cannot be found",
             ErrorCode.NOT_FOUND
@@ -73,12 +67,9 @@ export const getFirestoreDataById = async (req: UserFirebase, res: Response) => 
 export const listFirestoreData = async (req: UserFirebase, res: Response) => {
     let all: {}[] = [];
     let ids:String[]=[];
-    const data = await firebaseAdmin.firestore()
-        .collection("data")
-        .doc(req.firebaseUser?.uid)
-        .collection("my_data")
+    const da = await data(req)
         .get();
-    data.forEach(async (e) => {
+    da.forEach(async (e) => {
 
         all.push(e.data());
         ids.push(e.id);
@@ -94,10 +85,7 @@ export const deleteFirestoreData = async (req: UserFirebase, res: Response) => {
     const id = req.params.id?.toString();
 
     try {
-        const data = await firebaseAdmin.firestore()
-            .collection("data")
-            .doc(req.firebaseUser?.uid)
-            .collection("my_data")
+        const da = await data(req)
             .doc(id)
             .delete({
                 exists: true
@@ -117,11 +105,9 @@ export const deleteFirestoreData = async (req: UserFirebase, res: Response) => {
 export const deleteListFirestoreData = async (req: UserFirebase, res: Response) => {
     const { list } = req.body;
     const batchDelete =  firebaseAdmin.firestore().batch();
-    const data =  firebaseAdmin.firestore().collection("data")
-        .doc(req.firebaseUser?.uid)
-        .collection("my_data");
+    
     for (let i = 0; i < list.length; i++) {
-        batchDelete.delete(data.doc(list[i]));
+        batchDelete.delete(data(req).doc(list[i]));
     }
     await batchDelete.commit();
     res.status(200).json({ "success": true });

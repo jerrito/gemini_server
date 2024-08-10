@@ -8,6 +8,7 @@ import redis, { createClient } from 'redis';
 import cloudinary from 'cloudinary';
 import bodyParser from 'body-parser';
 import admin,{ initializeApp } from "firebase-admin";
+import { UserFirebase } from "index";
 const app: Express = express();
 
 var serviceAccount = require("../firebase_key.json");
@@ -33,6 +34,11 @@ export const cloudinaryConfig = cloudinary.v2.config({
     api_key: cloudinaryApiKey,
     api_secret: cloudinaryApiSecret
 });
+
+export const data=(req:UserFirebase)=>
+      firebaseAdmin.firestore().collection("data")
+        .doc(req.firebaseUser?.uid)
+        .collection("my_data");
 
 // // redis client config
 // export const client = createClient({

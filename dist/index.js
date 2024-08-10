@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.prismaClient = exports.cloudinaryConfig = exports.firebaseAdmin = void 0;
+exports.prismaClient = exports.data = exports.cloudinaryConfig = exports.firebaseAdmin = void 0;
 const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
 const secrets_1 = require("./secrets");
@@ -30,6 +30,13 @@ exports.cloudinaryConfig = cloudinary_1.default.v2.config({
     api_key: secrets_1.cloudinaryApiKey,
     api_secret: secrets_1.cloudinaryApiSecret
 });
+const data = (req) => {
+    var _a;
+    return exports.firebaseAdmin.firestore().collection("data")
+        .doc((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid)
+        .collection("my_data");
+};
+exports.data = data;
 // // redis client config
 // export const client = createClient({
 //     password: redisPassword,

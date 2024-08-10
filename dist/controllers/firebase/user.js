@@ -13,9 +13,11 @@ const userUpdate = async (req, res) => {
     var _a;
     var email = req.query.email;
     var userName = req.query.userName;
+    var phoneNumber = req.query.phoneNumber;
     const user = await index_1.firebaseAdmin.auth().updateUser((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid, {
-        email: email,
-        displayName: userName
+        email,
+        displayName: userName,
+        phoneNumber
     });
     res.status(200).json(user);
 };

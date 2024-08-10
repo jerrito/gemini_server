@@ -7,7 +7,6 @@ const unauthorized_1 = require("../exceptions/unauthorized");
 const firebaseAuthMiddleware = async (req, res, next) => {
     var _a;
     const token = req.headers.authorization;
-    console.log("dd");
     try {
         const decodedIdToken = await index_1.firebaseAdmin.auth().verifyIdToken(token);
         console.log(decodedIdToken);

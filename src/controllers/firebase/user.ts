@@ -12,15 +12,17 @@ export const userUpdate=async(req:UserFirebase,res:Response)=>{
 
     var email: any = req.query.email;
     var userName: any = req.query.userName;
+    var phoneNumber: any =req.query.phoneNumber;
     
 
    const user=await firebaseAdmin.auth().updateUser(
         req.firebaseUser?.uid,{
-         email:email,
-            displayName:userName
+         email,
+            displayName:userName,
+            phoneNumber
         }
     );
-    res.status(200).json(user)
+    res.status(200).json(user);
 }
 
 export const updateFirebasePicture=async(req:UserFirebase,res:Response)=>{

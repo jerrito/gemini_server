@@ -30,5 +30,5 @@ dataRoute.get("/firestore/datas", [firebase_auth_1.default], (0, error_handler_1
 //! delete firestore data
 dataRoute.delete("/firestore/data/:id", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteFirestoreData));
 //! delete firestore list data
-dataRoute.delete("/firestore/data/list", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteListFirestoreData));
+dataRoute.delete("/firestore/delete/list", [firebase_auth_1.default], (0, error_handler_1.errorHandler)(data_2.deleteListFirestoreData));
 exports.default = dataRoute;
