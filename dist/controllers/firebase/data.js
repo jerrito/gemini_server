@@ -10,7 +10,6 @@ const bad_request_1 = require("../../exceptions/bad_request");
 const root_1 = require("../../exceptions/root");
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const createFireStoreData = async (req, res, next) => {
-    var _a;
     const validatedData = data_1.dataSchema.parse(req.body);
     let url = "";
     if (validatedData.hasImage) {
@@ -29,10 +28,7 @@ const createFireStoreData = async (req, res, next) => {
             throw new bad_request_1.BadRequest(e.toString(), root_1.ErrorCode.BAD_REQUEST);
         }
     }
-    const data = await index_1.firebaseAdmin.firestore()
-        .collection("data")
-        .doc((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid)
-        .collection("my_data")
+    const da = await (0, index_1.data)(req)
         .add({
         "title": validatedData.title,
         "data": validatedData.data,
@@ -40,21 +36,17 @@ const createFireStoreData = async (req, res, next) => {
         "dataImage": url,
         "dateTime": Date.now()
     });
-    res.status(200).json((await data.get()).data());
+    res.status(200).json((await da.get()).data());
 };
 exports.createFireStoreData = createFireStoreData;
 const getFirestoreDataById = async (req, res) => {
-    var _a;
     const id = req.params.id.toString();
     console.log(id);
     try {
-        const data = await index_1.firebaseAdmin.firestore()
-            .collection("data")
-            .doc((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid)
-            .collection("my_data")
+        const da = await (0, index_1.data)(req)
             .doc(id)
             .get();
-        res.status(200).json(data.data());
+        res.status(200).json(da.data());
     }
     catch (e) {
         throw new bad_request_1.BadRequest("Document id cannot be found", root_1.ErrorCode.NOT_FOUND);
@@ -62,15 +54,11 @@ const getFirestoreDataById = async (req, res) => {
 };
 exports.getFirestoreDataById = getFirestoreDataById;
 const listFirestoreData = async (req, res) => {
-    var _a;
     let all = [];
     let ids = [];
-    const data = await index_1.firebaseAdmin.firestore()
-        .collection("data")
-        .doc((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid)
-        .collection("my_data")
+    const da = await (0, index_1.data)(req)
         .get();
-    data.forEach(async (e) => {
+    da.forEach(async (e) => {
         all.push(e.data());
         ids.push(e.id);
     });
@@ -78,13 +66,10 @@ const listFirestoreData = async (req, res) => {
 };
 exports.listFirestoreData = listFirestoreData;
 const deleteFirestoreData = async (req, res) => {
-    var _a, _b;
+    var _a;
     const id = (_a = req.params.id) === null || _a === void 0 ? void 0 : _a.toString();
     try {
-        const data = await index_1.firebaseAdmin.firestore()
-            .collection("data")
-            .doc((_b = req.firebaseUser) === null || _b === void 0 ? void 0 : _b.uid)
-            .collection("my_data")
+        const da = await (0, index_1.data)(req)
             .doc(id)
             .delete({
             exists: true
@@ -97,14 +82,10 @@ const deleteFirestoreData = async (req, res) => {
 };
 exports.deleteFirestoreData = deleteFirestoreData;
 const deleteListFirestoreData = async (req, res) => {
-    var _a;
     const { list } = req.body;
     const batchDelete = index_1.firebaseAdmin.firestore().batch();
-    const data = index_1.firebaseAdmin.firestore().collection("data")
-        .doc((_a = req.firebaseUser) === null || _a === void 0 ? void 0 : _a.uid)
-        .collection("my_data");
     for (let i = 0; i < list.length; i++) {
-        batchDelete.delete(data.doc(list[i]));
+        batchDelete.delete((0, index_1.data)(req).doc(list[i]));
     }
     await batchDelete.commit();
     res.status(200).json({ "success": true });
