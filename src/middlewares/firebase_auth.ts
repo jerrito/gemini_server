@@ -23,8 +23,8 @@ import { any } from "zod";
         )
     };
     console.log(decodedIdToken?.uid)
-    let user=await firebaseAdmin.auth().getUserByPhoneNumber(
-        decodedIdToken?.phone_number ?? 
+    let user=await firebaseAdmin.auth().getUser(
+        decodedIdToken?.uid ?? 
         "");
         if (!user) {
             return next(new UnauthorizedException(
