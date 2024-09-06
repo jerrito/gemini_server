@@ -1,1 +1,13 @@
-
+{
+  "type": "service_account",
+  "project_id": "jerrito-gemini-ai",
+  "private_key_id": "a8eaa9a79c375fb150b65c37fafc2aba79c38510",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+zK2rvOSvQGdz\nk2RMnt2ipD6IrqZA17clgu3a06mgJ9LYz6jWVOiR3ytjrRfX4RUmnPBuKEEUjzN7\nzG9WMUs+NNZO9Vh4Q56YTXxLq1bcRmwxmHkF9+BbkAdxviNdY0/dcssgLKRLYkix\nQKbWWaCeb7QFRKRNMa2Tpi8/36/JI1krswgzXSDW4dWK2vIqJQ+5U+Al3/1jgC16\nxsSTlfMWKg3ko6HNZq28zhsjP/0pLjnUEtmb9bRQ+f/mu7t8+LDXScxAt+5qkM5g\nkfhDjBwRz/tqycv3ts5PDJCikhtqBEjhJEU47rRrclYE2oEOidbkj+p23qXxC7+e\n2WM4crkBAgMBAAECggEAOugDSG3hpq+6IMclJLi5kbCms9lD7+oJm9Wv7KsDiDQz\nVwfJxx5gzUR652O15EsUFh9G5aOc8CWEDhkgWJqQceyrK6Z4wWyTBs+Ja+1CvHAr\nkCZUWwDb7jjp63Z6AaebLTH3P4A42yNFcSAWQkBao/+1sxitpz2KqvaYSN6dLXoo\nMGeU4IBJlsFrygndW1LOyUJwd0DZsYb8GFR/xEgyDIJ25Key3OiffpTfnNrh1Q3x\nbjA8jzU7wzK+enuSsAnMLs1ume4f2/G2PPgSqnq6nZl1oi4YSsCHZl0h8hhdaOhJ\njYh9/nanPFAcwS8G3fRyahPi8Sod4j5tzSUwbj+ApwKBgQD8QrDfrJuJ3jTfMcGm\nr4WF1oni66nklcRtiJHORVt2GYPwaxwfiPNN2dJNIHhoKIwCMeGnMaWpc1zc4AxE\nkwF9dX5YV4bjxF9cqn4MNtKh28NzoM+PE3IP4Jc9AzZPRmwu/Rx45piSU3Qa9Sdu\nUYfXibF/SWkKg5TtY92hU4VC7wKBgQDBoL9wcn9xRFyJmIkRAqowwYrTfC0jxlRd\nzgBNVkt2ogOapgn1wy0Xo7ewToXIDiSPtFb610BfeovdPVR5M9yKH/NnUTp7nT9A\nePt55NBwqSvPbKhdgt3/w03am1mnHXFQ6VZoC+fY1mFZDMEY/SAn5h22Iqjxc8YP\n2JlxHdUDDwKBgBoGI0sf+nfRpbC06F5y0xqIlHcFiuRbEwWdxjT6cMIRRcxCsIcM\nUNViOFDena1ZKYB8duQRuh5uGVFsB7f3VnsD6QHiHbdXpeLgb9qAuWAbVOGT4HXJ\nMsYyjEeuEidBg52hXROX7nuCAoNZcTTvUk1JFjekciK0imOnHtEq1Z+fAoGAfCBt\nuUtdUaJOZFLpw4Le0aSxN4RKd72jxgLShMGGXQXdo50/k1JMrPPiRN8Buk7+tzUX\n8XReKxcnZGv1pEFP5yg2ZIxZHnee3djw9aJu0VpR4IY6pL/JSzXLyhF+9rfUNddv\n8gF33rUH8QtRGpDitVE6yNENVsQuO2hSbYZ/UJcCgYEAsnkO7+sIEKio1goRiWI8\nrbtlPK3VwceTUYg7hLgzhcKpCw6x0Xbo6SP4pa/j8cD14NAt1cWYddIRjgIKohQL\nKmUwjymluJqbxPy/uCXbXpgoXsdU+Lxtl2lOnnspWbJwyYbt4B3hsVxmuAsBpdZ+\nM9AW4nf2fV4t8+s9urTEeDY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-la6na@jerrito-gemini-ai.iam.gserviceaccount.com",
+  "client_id": "101464571226840835386",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-la6na%40jerrito-gemini-ai.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
