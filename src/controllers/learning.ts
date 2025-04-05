@@ -60,7 +60,7 @@ export const learningLink = async (req: Request, res: Response) => {
         }
     });
     if (checkLink) {
-
+        
     }
     const createLink = await prisma.learningLink.create({
         data: {
